@@ -1,1 +1,39 @@
-{"total_pnl": 0, "win_rate": 0, "total_trades": 0, "recent": []}
+{
+  "total_pnl": 59.84,
+  "win_rate": 100.0,
+  "total_trades": 8,
+  "recent": [
+    {
+      "date": "2026-10-08",
+      "ticker": "WOLF",
+      "side": "long",
+      "fill": 30.53,
+      "exit": 35.11,
+      "pnl": 15.0
+    },
+    {
+      "date": "2026-10-08",
+      "ticker": "IPW",
+      "side": "long",
+      "fill": 1.3,
+      "exit": 1.49,
+      "pnl": 14.62
+    },
+    {
+      "date": "2026-10-08",
+      "ticker": "HAE",
+      "side": "long",
+      "fill": 103.48,
+      "exit": 119.0,
+      "pnl": 15.0
+    },
+    {
+      "date": "2026-10-08",
+      "ticker": "SXTC",
+      "side": "short",
+      "fill": 0.46,
+      "exit": 0.39,
+      "pnl": 15.22
+    }
+  ]
+}
