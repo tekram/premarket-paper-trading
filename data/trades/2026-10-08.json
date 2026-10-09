@@ -95,16 +95,16 @@
       "fill": 5.81,
       "stop": 6.27,
       "target": 4.94,
-      "status": "open",
-      "exit": null,
-      "exit_date": null,
-      "pnl_pct": null
+      "status": "closed",
+      "exit": 6.27,
+      "exit_date": "2026-10-09",
+      "pnl_pct": -7.92
     }
   ],
   "summary": {
     "total_trades": 8,
-    "open": 4,
-    "closed": 4,
-    "total_pnl_pct": 59.84
+    "open": 3,
+    "closed": 5,
+    "total_pnl_pct": 51.92
   }
 }

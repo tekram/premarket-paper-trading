@@ -1,6 +1,6 @@
 {
-  "total_pnl": 59.84,
-  "win_rate": 100.0,
+  "total_pnl": 51.92,
+  "win_rate": 80.0,
   "total_trades": 8,
   "recent": [
     {
@@ -34,6 +34,14 @@
       "fill": 0.46,
       "exit": 0.39,
       "pnl": 15.22
+    },
+    {
+      "date": "2026-10-09",
+      "ticker": "BULL",
+      "side": "short",
+      "fill": 5.81,
+      "exit": 6.27,
+      "pnl": -7.92
     }
   ]
 }
