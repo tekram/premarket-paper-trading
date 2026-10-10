@@ -31,10 +31,7 @@ body {
 }
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 /* ---------- header ---------- */
-.hero {
-  padding: 44px 0 8px;
-  text-align: left;
-}
+.hero { padding: 44px 0 8px; text-align: left; }
 .hero .kicker {
   display: inline-block;
   font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
@@ -47,7 +44,7 @@ body {
   background: linear-gradient(92deg, #fff 20%, var(--accent) 60%, var(--accent2) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.hero p.sub { color: var(--muted); margin-top: 8px; font-size: 15px; max-width: 640px; line-height: 1.55; }
+.hero p.sub { color: var(--muted); margin-top: 8px; font-size: 15px; max-width: 660px; line-height: 1.55; }
 .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
 .badge {
   font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px;
@@ -55,14 +52,8 @@ body {
 }
 .badge.paper { color: var(--gold); border-color: rgba(245,185,66,.35); background: rgba(245,185,66,.08); }
 /* ---------- KPI cards ---------- */
-.kpis {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px; margin: 26px 0;
-}
-.kpi {
-  background: linear-gradient(180deg, var(--card2), var(--card));
-  border: 1px solid var(--border); border-radius: 14px; padding: 16px;
-}
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 26px 0; }
+.kpi { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
 .kpi .label { font-size: 11.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; }
 .kpi .value { font-size: 26px; font-weight: 800; margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.5px; }
 .kpi .sub2 { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
@@ -72,10 +63,7 @@ body {
 section { margin-top: 34px; }
 section h2 { font-size: 20px; font-weight: 750; margin-bottom: 4px; letter-spacing: -.3px; }
 section .desc { color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
-.card {
-  background: linear-gradient(180deg, var(--card2), var(--card));
-  border: 1px solid var(--border); border-radius: 16px; padding: 20px;
-}
+.card { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
 /* ---------- chart ---------- */
 #chart { width: 100%; height: auto; display: block; }
 .chart-tip { font-size: 11px; fill: var(--muted); }
@@ -94,18 +82,14 @@ tbody tr:hover { background: rgba(110,168,255,.04); }
 .ticker { font-weight: 750; font-size: 14.5px; }
 /* ---------- day blocks ---------- */
 .day { margin-bottom: 18px; }
-.day-head {
-  display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px;
-  padding: 14px 20px; border-bottom: 1px solid var(--border);
-}
+.day-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
 .day-head .d { font-size: 16.5px; font-weight: 750; }
 .day-head .dpnl { font-size: 15px; font-weight: 750; font-variant-numeric: tabular-nums; }
 .trades { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; padding: 16px 20px 20px; }
-.trade {
-  background: rgba(10,14,23,.55); border: 1px solid var(--border); border-radius: 12px; padding: 14px;
-}
+.trade { background: rgba(10,14,23,.55); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
 .trade-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .trade .pnl { font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.trade .pnl small { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
 .kv { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin: 10px 0; font-size: 12.5px; }
 .kv .k { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px; font-weight: 700; }
 .kv .v { font-variant-numeric: tabular-nums; font-weight: 600; margin-top: 2px; }
@@ -122,10 +106,7 @@ tbody tr:hover { background: rgba(110,168,255,.04); }
 footer { margin-top: 40px; color: var(--muted); font-size: 12.5px; text-align: center; line-height: 1.6; }
 footer a { color: var(--accent); text-decoration: none; }
 .loading { color: var(--muted); padding: 30px; text-align: center; }
-@media (max-width: 640px) {
-  .kv { grid-template-columns: 1fr 1fr; }
-  .kpi .value { font-size: 22px; }
-}
+@media (max-width: 640px) { .kv { grid-template-columns: 1fr 1fr; } .kpi .value { font-size: 22px; } }
 </style>
 </head>
 <body>
@@ -134,31 +115,31 @@ footer a { color: var(--accent); text-decoration: none; }
   <div class="hero">
     <span class="kicker">Muse AI Trading</span>
     <h1>Premarket Paper</h1>
-    <p class="sub">An AI-run paper trading playbook. Every weekday morning Muse reads the premarket tape, publishes trade setups, and paper-trades them — filled at the open, managed by fixed rules, tracked here to the cent.</p>
+    <p class="sub">An AI-run paper trading playbook. Every weekday morning Muse reads the premarket tape, publishes trade setups, and paper-trades them — filled at the open, managed by fixed rules, tracked here in real dollars.</p>
     <div class="badges">
       <span class="badge paper">PAPER ONLY — no real money</span>
       <span class="badge" id="b-updated">updated …</span>
-      <span class="badge">start equity $100,000</span>
+      <span class="badge">$10,000 notional per trade</span>
     </div>
   </div>
 
   <div class="kpis" id="kpis"><div class="loading">Loading track record…</div></div>
 
   <section>
-    <h2>Equity curve</h2>
-    <div class="desc">Cumulative realized P&amp;L on a $100,000 starting book. Percentage points are additive — $1 of move = 0.001%.</div>
+    <h2>Cumulative P&amp;L</h2>
+    <div class="desc">Realized profit in dollars, trade by trade, at $10,000 notional each. Starts at $0.</div>
     <div class="card"><svg id="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg></div>
   </section>
 
   <section>
     <h2>Open positions</h2>
-    <div class="desc">Live paper book, marked to the last verified close. Unrealized P&amp;L is not banked until exit.</div>
+    <div class="desc">Live paper book, marked to the last verified close. Unrealized dollars are not banked until exit.</div>
     <div class="card" style="padding:6px 10px; overflow-x:auto;"><table id="open-table"></table></div>
   </section>
 
   <section>
     <h2>Trades, day by day</h2>
-    <div class="desc">Every setup the brief produced — entry, stop, target, the thesis behind it, and exactly why each closed trade exited.</div>
+    <div class="desc">Every setup the brief produced — entry, stop, target, dollar P&amp;L, the thesis behind it, and exactly why each closed trade exited.</div>
     <div id="days"><div class="loading">Loading days…</div></div>
   </section>
 
@@ -171,7 +152,12 @@ footer a { color: var(--accent); text-decoration: none; }
         <li>Setups become paper trades <b>filled at the regular-session open</b> — never at a guessed price; unverifiable opens are skipped.</li>
         <li>Risk rules are fixed: <code>8% stop</code>, <code>15% target</code>, <code>5-trading-day max hold</code>. No discretion, no overrides.</li>
         <li><b>First-touch accounting:</b> if a session's range touches both stop and target, the exit is whichever printed first intraday (verified with intraday bars).</li>
-        <li>Book starts at <b>$100,000</b>; P&amp;L is tracked in additive percentage points so the equity curve reads in dollars.</li>
+      </ul>
+      <h3>Dollar accounting</h3>
+      <ul>
+        <li>Every setup is booked at <b>$10,000 notional</b>. Dollar P&amp;L per trade = $10,000 × per-trade %.</li>
+        <li>Totals are <b>additive</b>: total $ = $10,000 × (sum of per-trade %). The per-trade percentages are the signal; dollars make them tangible.</li>
+        <li>This is <b>not a portfolio return</b>. Summed percentages assume each trade stood alone — with up to 14 concurrent positions, gross notional has peaked at $140,000 against the $100,000 reference book. Read totals as <i>signal P&amp;L</i>, not a literal account balance.</li>
       </ul>
       <h3>Is this day trading?</h3>
       <p>Not by design. Nothing is forced to close the same day — positions are <b>short-term swings held 1 to 5 trading days</b>, entered once at the open and managed only by the stop, target, or time stop. In practice these volatile names often resolve in a day or two when a level gets tagged, which can look like day trading on the tape, but there is no intraday entry/exit logic.</p>
@@ -183,7 +169,7 @@ footer a { color: var(--accent); text-decoration: none; }
         <li>This page rebuilds from the published trade files — nothing here is hand-edited.</li>
       </ul>
       <h3>Honest limits</h3>
-      <p>Paper fills assume the open is attainable in size (it often isn't for thin names), there are no commissions or borrow costs on shorts, and gap-opens past a stop still exit at the stop level. Treat this as a measure of the <i>brief's</i> edge, not a tradable return stream.</p>
+      <p>Paper fills assume the open is attainable in size (it often isn't for thin names), there are no commissions or borrow costs on shorts, and gap-opens past a stop still exit at the stop level. Small sample: 5 closed trades so far — an 80% win rate means almost nothing yet. Treat this as a measure of the <i>brief's</i> edge, not a tradable return stream.</p>
     </div>
   </section>
 
@@ -194,11 +180,13 @@ footer a { color: var(--accent); text-decoration: none; }
 </div>
 
 <script>
-const START_EQUITY = 100000;
+const NOTIONAL = 10000;
 const $ = id => document.getElementById(id);
-const fmt$ = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString("en-US", {maximumFractionDigits: 0});
+const fmt$ = n => (n < 0 ? "-$" : n > 0 ? "+$" : "$") + Math.abs(n).toLocaleString("en-US", {maximumFractionDigits: 0});
+const fmt$plain = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString("en-US", {maximumFractionDigits: 0});
 const fmtPct = n => (n > 0 ? "+" : "") + n.toFixed(2) + "%";
-const cls = n => n >= 0 ? "pos" : "neg";
+const cls = n => n > 0 ? "pos" : n < 0 ? "neg" : "";
+const dollars = pct => NOTIONAL * pct / 100;
 const unreal = t => {
   if (t.status !== "open" || t.mark == null) return null;
   return t.side === "long" ? (t.mark - t.fill) / t.fill * 100 : (t.fill - t.mark) / t.fill * 100;
@@ -223,19 +211,19 @@ async function load() {
   const open = all.filter(t => t.status === "open");
 
   const realizedPct = closed.reduce((s, t) => s + (t.pnl_pct || 0), 0);
-  const equity = START_EQUITY * (1 + realizedPct / 100);
+  const realized$ = dollars(realizedPct);
   const wins = closed.filter(t => (t.pnl_pct || 0) > 0).length;
   const openPct = open.reduce((s, t) => s + (unreal(t) || 0), 0);
-  const open$ = START_EQUITY * openPct / 100;
+  const open$ = dollars(openPct);
+  const total$ = realized$ + open$;
 
   $("b-updated").textContent = "updated " + (idx.updated_at ? idx.updated_at.slice(0, 10) : "recently");
 
   $("kpis").innerHTML = `
-    <div class="kpi hero-kpi"><div class="label">Equity</div><div class="value">${fmt$(equity)}</div><div class="sub2">from $100,000 · realized</div></div>
-    <div class="kpi"><div class="label">Realized P&amp;L</div><div class="value ${cls(realizedPct)}">${fmt$(START_EQUITY*realizedPct/100)}</div><div class="sub2">${fmtPct(realizedPct)} · ${closed.length} closed</div></div>
-    <div class="kpi"><div class="label">Open P&amp;L</div><div class="value ${cls(openPct)}">${openPct === 0 && open.every(t=>unreal(t)===null) ? "—" : fmt$(open$)}</div><div class="sub2">${openPct === 0 && open.every(t=>unreal(t)===null) ? "no marks" : fmtPct(openPct) + " unrealized · " + open.length + " open"}</div></div>
-    <div class="kpi"><div class="label">Win rate</div><div class="value">${closed.length ? Math.round(wins/closed.length*100) : 0}%</div><div class="sub2">${wins}W / ${closed.length-wins}L</div></div>
-    <div class="kpi"><div class="label">Total P&amp;L</div><div class="value ${cls(realizedPct+openPct)}">${fmtPct(realizedPct+openPct)}</div><div class="sub2">realized + open</div></div>`;
+    <div class="kpi hero-kpi"><div class="label">Total P&amp;L</div><div class="value ${cls(total$)}">${fmt$(total$)}</div><div class="sub2">${fmtPct(realizedPct + openPct)} · realized + open</div></div>
+    <div class="kpi"><div class="label">Realized P&amp;L</div><div class="value ${cls(realized$)}">${fmt$(realized$)}</div><div class="sub2">${fmtPct(realizedPct)} · ${closed.length} closed trades</div></div>
+    <div class="kpi"><div class="label">Open P&amp;L</div><div class="value ${cls(open$)}">${fmt$(open$)}</div><div class="sub2">${fmtPct(openPct)} unrealized · ${open.length} open</div></div>
+    <div class="kpi"><div class="label">Win rate</div><div class="value">${closed.length ? Math.round(wins / closed.length * 100) : 0}%</div><div class="sub2">${wins}W / ${closed.length - wins}L · ${closed.length} closed</div></div>`;
 
   drawChart(closed);
   renderOpen(open);
@@ -244,37 +232,35 @@ async function load() {
 
 function drawChart(closed) {
   const svg = $("chart");
-  const W = 900, H = 320, P = {l: 64, r: 18, t: 18, b: 30};
-  let pts = [{eq: START_EQUITY, label: "start"}];
-  let eq = START_EQUITY;
-  for (const t of closed) { eq += START_EQUITY * (t.pnl_pct || 0) / 100; pts.push({eq, t}); }
-  const min = Math.min(START_EQUITY, ...pts.map(p => p.eq));
-  const max = Math.max(START_EQUITY, ...pts.map(p => p.eq));
-  const pad = Math.max((max - min) * 0.12, START_EQUITY * 0.01);
+  const W = 900, H = 320, P = {l: 76, r: 18, t: 18, b: 30};
+  let pts = [{v: 0, label: "start"}];
+  let cum = 0;
+  for (const t of closed) { cum += dollars(t.pnl_pct || 0); pts.push({v: cum, t}); }
+  const min = Math.min(0, ...pts.map(p => p.v));
+  const max = Math.max(0, ...pts.map(p => p.v));
+  const pad = Math.max((max - min) * 0.15, 500);
   const y = v => P.t + (1 - (v - (min - pad)) / ((max + pad) - (min - pad))) * (H - P.t - P.b);
   const x = i => P.l + i / Math.max(pts.length - 1, 1) * (W - P.l - P.r);
-  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.eq).toFixed(1)}`).join(" ");
-  const up = pts[pts.length-1].eq >= START_EQUITY;
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ");
+  const up = pts[pts.length - 1].v >= 0;
   const col = up ? "#22d47b" : "#ff5d6c";
   let s = `<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>`;
-  // gridlines
   for (const f of [0, .25, .5, .75, 1]) {
     const v = (min - pad) + f * ((max + pad) - (min - pad));
     const yy = y(v);
     s += `<line x1="${P.l}" y1="${yy}" x2="${W-P.r}" y2="${yy}" stroke="#22304a" stroke-width="1" opacity=".6"/>`;
-    s += `<text x="${P.l-8}" y="${yy+4}" text-anchor="end" class="axis-lbl">${fmt$(v)}</text>`;
+    s += `<text x="${P.l-8}" y="${yy+4}" text-anchor="end" class="axis-lbl">${fmt$plain(Math.round(v))}</text>`;
   }
-  // start baseline
-  s += `<line x1="${P.l}" y1="${y(START_EQUITY)}" x2="${W-P.r}" y2="${y(START_EQUITY)}" stroke="#8b9bb4" stroke-dasharray="5,5" stroke-width="1" opacity=".7"/>`;
+  s += `<line x1="${P.l}" y1="${y(0)}" x2="${W-P.r}" y2="${y(0)}" stroke="#8b9bb4" stroke-dasharray="5,5" stroke-width="1" opacity=".7"/>`;
   s += `<path d="${line} L${x(pts.length-1)},${H-P.b} L${x(0)},${H-P.b} Z" fill="url(#ag)"/>`;
   s += `<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>`;
   pts.forEach((p, i) => {
     if (!p.t) return;
-    const tt = `${p.t.ticker} ${p.t.side} · exited ${p.t.exit_date || ""} · ${fmtPct(p.t.pnl_pct||0)}`;
-    s += `<circle cx="${x(i)}" cy="${y(p.eq)}" r="5" fill="${(p.t.pnl_pct||0)>=0?"#22d47b":"#ff5d6c"}" stroke="#0a0e17" stroke-width="2"><title>${tt}</title></circle>`;
-    if (pts.length <= 14 || i % Math.ceil(pts.length/12) === 0)
-      s += `<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="chart-tip">${(p.t.exit_date||"").slice(5)}</text>`;
+    const tt = `${p.t.ticker} ${p.t.side} · exited ${p.t.exit_date || ""} · ${fmt$(dollars(p.t.pnl_pct || 0))} (${fmtPct(p.t.pnl_pct || 0)})`;
+    s += `<circle cx="${x(i)}" cy="${y(p.v)}" r="5" fill="${(p.t.pnl_pct || 0) >= 0 ? "#22d47b" : "#ff5d6c"}" stroke="#0a0e17" stroke-width="2"><title>${tt}</title></circle>`;
+    if (pts.length <= 14 || i % Math.ceil(pts.length / 12) === 0)
+      s += `<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="chart-tip">${(p.t.exit_date || "").slice(5)}</text>`;
   });
   svg.innerHTML = s;
 }
@@ -282,13 +268,13 @@ function drawChart(closed) {
 function renderOpen(open) {
   const el = $("open-table");
   if (!open.length) { el.innerHTML = `<tr><td style="padding:20px;color:var(--muted)">No open positions.</td></tr>`; return; }
-  let h = `<thead><tr><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Mark</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized</th><th>Thesis</th></tr></thead><tbody>`;
+  let h = `<thead><tr><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Mark</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized $</th><th>Thesis</th></tr></thead><tbody>`;
   for (const t of open) {
     const u = unreal(t);
     h += `<tr><td class="ticker">${t.ticker}</td><td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
       <td class="num">${t.fill.toFixed(2)}</td><td class="num">${t.mark != null ? t.mark.toFixed(2) : "—"}</td>
       <td class="num">${t.stop.toFixed(2)}</td><td class="num">${t.target.toFixed(2)}</td>
-      <td class="num ${u == null ? "" : cls(u)}">${u == null ? "—" : fmtPct(u)}</td>
+      <td class="num ${u == null ? "" : cls(dollars(u))}">${u == null ? "—" : fmt$(dollars(u)) + `<br><span style="font-size:11px;color:var(--muted)">${fmtPct(u)}</span>`}</td>
       <td style="max-width:280px;font-size:12.5px;color:#c6d2e3">${t.thesis || ""}</td></tr>`;
   }
   el.innerHTML = h + "</tbody>";
@@ -299,23 +285,24 @@ function renderDays(days, files) {
   let h = "";
   for (const d of days.slice().reverse()) {
     const f = files[d]; if (!f) continue;
-    const trades = [...(f.longs||[]), ...(f.shorts||[])];
-    const dayReal = trades.filter(t=>t.status==="closed").reduce((s,t)=>s+(t.pnl_pct||0),0);
-    const nOpen = trades.filter(t=>t.status==="open").length;
-    h += `<div class="card day"><div class="day-head"><span class="d">${d} <span style="color:var(--muted);font-weight:400;font-size:13px">· ${trades.length} setups${nOpen?` · ${nOpen} open`:""}</span></span>
-      <span class="dpnl ${cls(dayReal)}">${dayReal ? fmtPct(dayReal)+" realized" : "—"}</span></div><div class="trades">`;
+    const trades = [...(f.longs || []), ...(f.shorts || [])];
+    const dayClosed = trades.filter(t => t.status === "closed");
+    const dayReal$ = dollars(dayClosed.reduce((s, t) => s + (t.pnl_pct || 0), 0));
+    const nOpen = trades.filter(t => t.status === "open").length;
+    h += `<div class="card day"><div class="day-head"><span class="d">${d} <span style="color:var(--muted);font-weight:400;font-size:13px">· ${trades.length} setups${nOpen ? ` · ${nOpen} open` : ""}</span></span>
+      <span class="dpnl ${cls(dayReal$)}">${dayClosed.length ? fmt$(dayReal$) + " realized" : "—"}</span></div><div class="trades">`;
     for (const t of trades) {
-      const u = unreal(t);
-      const pnl = t.status === "closed" ? t.pnl_pct : u;
+      const pct = t.status === "closed" ? t.pnl_pct : unreal(t);
+      const d$ = pct == null ? null : dollars(pct);
       h += `<div class="trade"><div class="trade-top">
           <span><span class="ticker">${t.ticker}</span> <span class="side ${t.side}">${t.side.toUpperCase()}</span></span>
-          <span class="pnl ${pnl == null ? "" : cls(pnl)}">${pnl == null ? (t.status==="open"?"open":"—") : fmtPct(pnl)}</span></div>
+          <span class="pnl ${d$ == null ? "" : cls(d$)}">${d$ == null ? (t.status === "open" ? "open" : "—") : fmt$(d$) + `<small>${fmtPct(pct)}</small>`}</span></div>
         <div class="kv">
           <div><div class="k">Entry</div><div class="v">${t.fill.toFixed(2)}</div></div>
           <div><div class="k">Stop</div><div class="v" style="color:var(--red)">${t.stop.toFixed(2)}</div></div>
           <div><div class="k">Target</div><div class="v" style="color:var(--green)">${t.target.toFixed(2)}</div></div>
-          <div><div class="k">${t.status==="closed"?"Exit":"Mark"}</div><div class="v">${t.status==="closed" ? t.exit.toFixed(2)+" · "+(t.exit_date||"") : (t.mark!=null?t.mark.toFixed(2):"—")}</div></div>
-          <div><div class="k">Filled</div><div class="v">${t.fill_date||""}</div></div>
+          <div><div class="k">${t.status === "closed" ? "Exit" : "Mark"}</div><div class="v">${t.status === "closed" ? t.exit.toFixed(2) + " · " + (t.exit_date || "") : (t.mark != null ? t.mark.toFixed(2) : "—")}</div></div>
+          <div><div class="k">Filled</div><div class="v">${t.fill_date || ""}</div></div>
           <div><div class="k">Status</div><div class="v">${t.status}</div></div>
         </div>
         ${t.thesis ? `<div class="why"><b>Why we took it</b>${t.thesis}</div>` : ""}
