@@ -136,6 +136,7 @@ footer a { color: var(--accent); text-decoration: none; }
     <button class="tab" data-pane="closed">Closed <span class="count" id="c-closed">–</span></button>
     <button class="tab" data-pane="byday">By day</button>
     <button class="tab" data-pane="method">Methodology</button>
+    <a class="tab" href="trades.html" style="text-decoration:none">Full ledger ↗</a>
   </div>
 
   <div class="tabpane active" id="pane-overview">
@@ -370,10 +371,10 @@ function renderOpen(open) {
 function renderClosed(closed) {
   const el = $("closed-table");
   if (!closed.length) { el.innerHTML = `<tr><td style="padding:20px;color:var(--muted)">No closed trades yet.</td></tr>`; return; }
-  let h = `<thead><tr><th>Exited</th><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Exit</th><th class="num">P&amp;L</th><th>Why it exited</th><th>Thesis</th></tr></thead><tbody>`;
+  let h = `<thead><tr><th>Opened</th><th>Exited</th><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Exit</th><th class="num">P&amp;L</th><th>Why it exited</th><th>Thesis</th></tr></thead><tbody>`;
   for (const t of closed.slice().reverse()) {
     const d$ = dollars(t.pnl_pct || 0);
-    h += `<tr><td style="white-space:nowrap">${t.exit_date || t.day}</td><td class="ticker">${esc(t.ticker)}</td>
+    h += `<tr><td style="white-space:nowrap">${t.fill_date || t.day}</td><td style="white-space:nowrap">${t.exit_date || t.day}</td><td class="ticker">${esc(t.ticker)}</td>
       <td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
       <td class="num">${t.fill.toFixed(2)}</td><td class="num">${t.exit != null ? t.exit.toFixed(2) : "—"}</td>
       <td class="num ${cls(d$)}"><b>${fmt$(d$)}</b><br><span style="font-size:11px;color:var(--muted)">${fmtPct(t.pnl_pct || 0)}</span></td>

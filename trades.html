@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Ledger — Premarket Paper</title>
+<style>
+:root {
+  --bg: #0a0e17; --card: #131b2c; --card2: #182236; --border: #22304a;
+  --text: #e8eef7; --muted: #8b9bb4;
+  --green: #22d47b; --green-dim: rgba(34,212,123,.12);
+  --red: #ff5d6c; --red-dim: rgba(255,93,108,.12);
+  --accent: #6ea8ff; --accent2: #b48cff; --gold: #f5b942;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  background: radial-gradient(1200px 500px at 50% -10%, #16233d 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--text); min-height: 100vh; padding: 0 0 60px;
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.hero { padding: 36px 0 4px; }
+.hero h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; letter-spacing: -.5px; }
+.hero h1 .grad { background: linear-gradient(92deg, #fff 20%, var(--accent) 60%, var(--accent2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p.sub { color: var(--muted); margin-top: 6px; font-size: 14px; max-width: 700px; line-height: 1.55; }
+.back { display: inline-block; margin-bottom: 14px; color: var(--accent); text-decoration: none; font-size: 13.5px; font-weight: 600; }
+.back:hover { text-decoration: underline; }
+.badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.badge { font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); background: var(--card); }
+.badge.paper { color: var(--gold); border-color: rgba(245,185,66,.35); background: rgba(245,185,66,.08); }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 22px 0; }
+.kpi { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; }
+.kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; }
+.kpi .value { font-size: 22px; font-weight: 800; margin-top: 5px; font-variant-numeric: tabular-nums; }
+.kpi .sub2 { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.pos { color: var(--green); } .neg { color: var(--red); }
+section { margin-top: 30px; }
+.secttl { font-size: 19px; font-weight: 750; margin-bottom: 4px; }
+.secdesc { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; max-width: 800px; line-height: 1.55; }
+.card { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 16px; padding: 8px 12px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 880px; }
+th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-weight: 700; padding: 10px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none; }
+th:hover { color: var(--text); }
+th .arrow { color: var(--accent); font-size: 10px; margin-left: 4px; }
+td { padding: 10px 8px; border-bottom: 1px solid rgba(34,48,74,.6); font-variant-numeric: tabular-nums; vertical-align: top; }
+tbody tr:hover { background: rgba(110,168,255,.04); }
+tr.total td { border-bottom: none; border-top: 2px solid var(--border); font-weight: 800; background: rgba(110,168,255,.05); }
+.num { text-align: right; white-space: nowrap; }
+.side { font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; letter-spacing: .5px; white-space: nowrap; }
+.side.long { color: var(--green); background: var(--green-dim); border: 1px solid rgba(34,212,123,.3); }
+.side.short { color: var(--red); background: var(--red-dim); border: 1px solid rgba(255,93,108,.3); }
+.ticker { font-weight: 750; }
+.status { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 999px; letter-spacing: .5px; white-space: nowrap; }
+.status.closed { color: var(--muted); background: rgba(139,155,180,.12); border: 1px solid var(--border); }
+.status.open { color: var(--accent); background: rgba(110,168,255,.1); border: 1px solid rgba(110,168,255,.35); }
+.note { font-size: 12px; color: #c6d2e3; line-height: 1.45; min-width: 220px; max-width: 320px; }
+.run { font-weight: 700; }
+.verify { margin-top: 26px; }
+.verify .card { padding: 18px 20px; }
+.verify p { font-size: 13.5px; line-height: 1.7; color: #c6d2e3; }
+.verify b { color: #fff; }
+.verify code { background: rgba(110,168,255,.1); border: 1px solid var(--border); border-radius: 6px; padding: 1px 7px; font-size: 12.5px; color: var(--accent); }
+footer { margin-top: 36px; color: var(--muted); font-size: 12.5px; text-align: center; line-height: 1.6; }
+footer a { color: var(--accent); text-decoration: none; }
+.loading { color: var(--muted); padding: 30px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <a class="back" href="index.html">← Back to dashboard</a>
+    <h1><span class="grad">Trade Ledger</span></h1>
+    <p class="sub">Every paper trade in chronological order. Each row shows what the trade made and the running P&amp;L after it — the full audit trail behind the dashboard totals. Click any column header to sort.</p>
+    <div class="badges">
+      <span class="badge paper">PAPER ONLY — no real money</span>
+      <span class="badge" id="b-updated">updated …</span>
+      <span class="badge">$10,000 notional per trade</span>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"><div class="loading">Loading…</div></div>
+
+  <section>
+    <div class="secttl">Closed trades — chronological</div>
+    <div class="secdesc">In exit order. <b>Running P&amp;L</b> is the balance after each trade closed, starting from $0 — it is the trade's impact on the book. Sort by any column; running values stay attached to their trade.</div>
+    <div class="card"><table id="closed-table"></table></div>
+  </section>
+
+  <section>
+    <div class="secttl">Open trades — pending</div>
+    <div class="secdesc">Unrealized dollars are marked to the last verified close. They are <b>not</b> in the running P&amp;L until the trade exits.</div>
+    <div class="card"><table id="open-table"></table></div>
+  </section>
+
+  <section class="verify">
+    <div class="secttl">Check the math</div>
+    <div class="card">
+      <p>
+        Add up the <b>P&amp;L $</b> column in the closed table — it equals the <b>Realized P&amp;L</b> on the dashboard, and it equals the final <b>Running P&amp;L</b> value.
+        Add the open table's unrealized total and you get the dashboard's <b>Total P&amp;L</b>.
+        Every setup the premarket brief produced is listed here — winners, losers, and open trades — so there is nowhere for a bad trade to hide.
+        Formula per row: <code>$ P&amp;L = $10,000 × per-trade %</code>; per-trade % is measured fill-to-exit against the verified open.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    Built and run by <b>Muse</b> · data: <a href="https://github.com/tekram/muse-ai-trading">github.com/tekram/muse-ai-trading</a><br>
+    Paper trading for research — not investment advice, not a recommendation.
+  </footer>
+</div>
+
+<script>
+const NOTIONAL = 10000;
+const $ = id => document.getElementById(id);
+const fmt$ = n => (n < 0 ? "-$" : n > 0 ? "+$" : "$") + Math.abs(n).toLocaleString("en-US", {maximumFractionDigits: 0});
+const fmtPct = n => (n > 0 ? "+" : "") + n.toFixed(2) + "%";
+const cls = n => n > 0 ? "pos" : n < 0 ? "neg" : "";
+const dollars = pct => NOTIONAL * pct / 100;
+const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const unreal = t => {
+  if (t.status !== "open" || t.mark == null) return null;
+  return t.side === "long" ? (t.mark - t.fill) / t.fill * 100 : (t.fill - t.mark) / t.fill * 100;
+};
+
+function makeSortable(table, rows, render) {
+  let key = table.dataset.sortKey, dir = +(table.dataset.sortDir || 1);
+  const ths = table.querySelectorAll("th[data-k]");
+  ths.forEach(th => {
+    th.onclick = () => {
+      const k = th.dataset.k;
+      if (table.dataset.sortKey === k) dir = -dir; else { key = k; dir = 1; }
+      table.dataset.sortKey = key; table.dataset.sortDir = dir;
+      const num = th.dataset.num === "1";
+      rows.sort((a, b) => {
+        let va = a[key], vb = b[key];
+        if (num) { va = +va || 0; vb = +vb || 0; }
+        else { va = String(va == null ? "" : va); vb = String(vb == null ? "" : vb); }
+        return (va < vb ? -1 : va > vb ? 1 : 0) * dir;
+      });
+      render(rows);
+      table.querySelectorAll("th[data-k]").forEach(h => {
+        h.querySelector(".arrow")?.remove();
+        if (h.dataset.k === key) h.insertAdjacentHTML("beforeend", `<span class="arrow">${dir === 1 ? "▲" : "▼"}</span>`);
+      });
+    };
+  });
+}
+
+async function load() {
+  const idx = await (await fetch("data/trades/index.json")).json();
+  const days = (idx.days || []).slice().sort();
+  const all = [];
+  for (const d of days) {
+    let f; try { f = await (await fetch(`data/trades/${d}.json`)).json(); } catch (e) { continue; }
+    for (const s of ["longs", "shorts"]) for (const t of (f[s] || [])) all.push({...t, day: d});
+  }
+  const closed = all.filter(t => t.status === "closed")
+    .sort((a, b) => (a.exit_date || a.day).localeCompare(b.exit_date || b.day) || a.ticker.localeCompare(b.ticker));
+  const open = all.filter(t => t.status === "open").sort((a, b) => a.day.localeCompare(b.day));
+
+  // running P&L attached in exit order
+  let run = 0;
+  closed.forEach((t, i) => { run += dollars(t.pnl_pct || 0); t._seq = i + 1; t._run = run; });
+
+  const realized$ = run;
+  const open$ = dollars(open.reduce((s, t) => s + (unreal(t) || 0), 0));
+  const wins = closed.filter(t => (t.pnl_pct || 0) > 0).length;
+
+  $("b-updated").textContent = "updated " + (idx.updated_at ? idx.updated_at.slice(0, 10) : "recently");
+  $("kpis").innerHTML = `
+    <div class="kpi"><div class="label">Realized P&amp;L</div><div class="value ${cls(realized$)}">${fmt$(realized$)}</div><div class="sub2">${closed.length} closed · ${wins}W/${closed.length - wins}L</div></div>
+    <div class="kpi"><div class="label">Open (unrealized)</div><div class="value ${cls(open$)}">${fmt$(open$)}</div><div class="sub2">${open.length} positions pending</div></div>
+    <div class="kpi"><div class="label">Total P&amp;L</div><div class="value ${cls(realized$ + open$)}">${fmt$(realized$ + open$)}</div><div class="sub2">realized + unrealized</div></div>
+    <div class="kpi"><div class="label">Notional / trade</div><div class="value">$10,000</div><div class="sub2">fixed · $ P&amp;L = $10k × %</div></div>`;
+
+  renderClosed(closed);
+  renderOpen(open);
+}
+
+function renderClosed(rows) {
+  const el = $("closed-table");
+  const tot$ = rows.reduce((s, t) => s + dollars(t.pnl_pct || 0), 0);
+  const totPct = rows.reduce((s, t) => s + (t.pnl_pct || 0), 0);
+  let h = `<thead><tr>
+    <th data-k="_seq" data-num="1">#</th><th data-k="day">Opened</th><th data-k="exit_date">Exited</th><th data-k="ticker">Ticker</th>
+    <th data-k="side">Side</th><th data-k="fill" data-num="1" class="num">Entry</th>
+    <th data-k="exit" data-num="1" class="num">Exit</th><th data-k="_d" data-num="1" class="num">P&amp;L $</th>
+    <th data-k="pnl_pct" data-num="1" class="num">P&amp;L %</th><th data-k="_run" data-num="1" class="num">Running P&amp;L</th>
+    <th>Exit reason</th></tr></thead><tbody>`;
+  rows.forEach(t => {
+    const d$ = dollars(t.pnl_pct || 0); t._d = d$;
+    h += `<tr><td>${t._seq}</td><td style="white-space:nowrap">${t.fill_date || t.day}</td><td style="white-space:nowrap">${t.exit_date || t.day}</td>
+      <td class="ticker">${esc(t.ticker)}</td><td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
+      <td class="num">${t.fill.toFixed(2)}</td><td class="num">${t.exit != null ? t.exit.toFixed(2) : "—"}</td>
+      <td class="num ${cls(d$)}"><b>${fmt$(d$)}</b></td><td class="num ${cls(d$)}">${fmtPct(t.pnl_pct || 0)}</td>
+      <td class="num run ${cls(t._run)}" title="Balance after this trade closed">${fmt$(t._run)}</td>
+      <td class="note">${esc(t.exit_reason)}</td></tr>`;
+  });
+  h += `<tr class="total"><td></td><td colspan="6">TOTAL — ${rows.length} closed trades</td>
+    <td class="num ${cls(tot$)}">${fmt$(tot$)}</td><td class="num ${cls(tot$)}">${fmtPct(totPct)}</td>
+    <td class="num ${cls(tot$)}">${fmt$(tot$)}</td><td></td></tr>`;
+  el.innerHTML = h + "</tbody>";
+  if (!el.dataset.sortKey) { el.dataset.sortKey = "_seq"; el.dataset.sortDir = 1; }
+  makeSortable(el, rows, renderClosed);
+}
+
+function renderOpen(rows) {
+  const el = $("open-table");
+  const tot$ = rows.reduce((s, t) => s + dollars(unreal(t) || 0), 0);
+  let h = `<thead><tr>
+    <th data-k="day">Taken</th><th data-k="ticker">Ticker</th><th data-k="side">Side</th>
+    <th data-k="fill" data-num="1" class="num">Entry</th><th data-k="mark" data-num="1" class="num">Mark</th>
+    <th data-k="stop" data-num="1" class="num">Stop</th><th data-k="target" data-num="1" class="num">Target</th>
+    <th data-k="_u" data-num="1" class="num">Unrealized $</th><th data-k="_up" data-num="1" class="num">%</th>
+    <th>Thesis</th></tr></thead><tbody>`;
+  rows.forEach(t => {
+    const u = unreal(t); t._u = u == null ? null : dollars(u); t._up = u;
+    h += `<tr><td style="white-space:nowrap">${t.fill_date || t.day}</td>
+      <td class="ticker">${esc(t.ticker)}</td><td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
+      <td class="num">${t.fill.toFixed(2)}</td><td class="num">${t.mark != null ? t.mark.toFixed(2) : "—"}</td>
+      <td class="num">${t.stop.toFixed(2)}</td><td class="num">${t.target.toFixed(2)}</td>
+      <td class="num ${u == null ? "" : cls(dollars(u))}">${u == null ? "—" : "<b>" + fmt$(dollars(u)) + "</b>"}</td>
+      <td class="num ${u == null ? "" : cls(dollars(u))}">${u == null ? "—" : fmtPct(u)}</td>
+      <td class="note">${esc(t.thesis)}</td></tr>`;
+  });
+  h += `<tr class="total"><td colspan="7">TOTAL UNREALIZED — ${rows.length} open (not in running P&amp;L)</td>
+    <td class="num ${cls(tot$)}">${fmt$(tot$)}</td><td></td><td></td></tr>`;
+  el.innerHTML = h + "</tbody>";
+  if (!el.dataset.sortKey) { el.dataset.sortKey = "day"; el.dataset.sortDir = 1; }
+  makeSortable(el, rows, renderOpen);
+}
+
+load().catch(() => { $("kpis").innerHTML = `<div class="loading">Couldn't load trade data.</div>`; });
+</script>
+</body>
+</html>
