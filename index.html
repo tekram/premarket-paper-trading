@@ -113,6 +113,20 @@ tbody tr:hover { background: rgba(110,168,255,.04); }
 footer { margin-top: 40px; color: var(--muted); font-size: 12.5px; text-align: center; line-height: 1.6; }
 footer a { color: var(--accent); text-decoration: none; }
 .loading { color: var(--muted); padding: 30px; text-align: center; }
+/* ---------- daily plan ---------- */
+.daypills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.pill { font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 7px 15px; cursor: pointer; }
+.pill:hover { color: var(--text); border-color: var(--accent); }
+.pill.active { color: #fff; background: rgba(110,168,255,.15); border-color: var(--accent); }
+.bias { border-left: 4px solid var(--gold); background: rgba(245,185,66,.06); border-radius: 0 12px 12px 0; padding: 14px 18px; margin-bottom: 18px; font-size: 14.5px; line-height: 1.6; }
+.bias .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: 800; display: block; margin-bottom: 4px; }
+.health { margin: 0 0 20px 2px; padding: 0; list-style: none; }
+.health li { font-size: 13.5px; color: #c6d2e3; line-height: 1.55; padding: 5px 0 5px 22px; position: relative; border-bottom: 1px solid rgba(34,48,74,.5); }
+.health li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+.plan-side { font-size: 15px; font-weight: 800; margin: 20px 0 8px; display: flex; align-items: center; gap: 8px; }
+.plan-side .dotlg { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.plan-table td:first-child { white-space: nowrap; }
+.fillcell { white-space: nowrap; }
 @media (max-width: 640px) { .kv { grid-template-columns: 1fr 1fr; } .kpi .value { font-size: 22px; } .tab { padding: 10px 10px; font-size: 13px; } }
 </style>
 </head>
@@ -132,6 +146,7 @@ footer a { color: var(--accent); text-decoration: none; }
 
   <div class="tabs" id="tabs">
     <button class="tab active" data-pane="overview">Overview</button>
+    <button class="tab" data-pane="plan">Daily Plan</button>
     <button class="tab" data-pane="open">Open <span class="count" id="c-open">–</span></button>
     <button class="tab" data-pane="closed">Closed <span class="count" id="c-closed">–</span></button>
     <button class="tab" data-pane="byday">By day</button>
@@ -144,6 +159,13 @@ footer a { color: var(--accent); text-decoration: none; }
     <div class="secttl">Cumulative P&amp;L</div>
     <div class="secdesc">Realized profit in dollars, day by day, at $10,000 notional per trade. Hover any day for its activity — trades taken and closed. Click a day to jump to its detail.</div>
     <div class="card"><div class="chart-wrap"><svg id="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg><div id="chart-tip"></div></div></div>
+  </div>
+
+  <div class="tabpane" id="pane-plan">
+    <div class="secttl">Daily plan</div>
+    <div class="secdesc">The premarket brief behind each trading day — market posture, health check, and the setups with their paper fills. Published every weekday morning before the open.</div>
+    <div class="daypills" id="plan-pills"></div>
+    <div id="plan-body"><div class="loading">Loading plans…</div></div>
   </div>
 
   <div class="tabpane" id="pane-open">
@@ -186,6 +208,7 @@ footer a { color: var(--accent); text-decoration: none; }
       <h3>How Muse runs it</h3>
       <ul>
         <li><b>~7:13 AM CT</b> — premarket brief written (market health, breadth, setups).</li>
+        <li><b>~7:30 AM CT</b> — the day's plan publishes to the Daily Plan tab from the brief.</li>
         <li><b>8:50 AM CT</b> — morning logger verifies each setup's official open and books the paper trades.</li>
         <li><b>4:15 PM CT</b> — exit check verifies every open position's session high/low/close, applies stops/targets/time exits, and publishes official marks.</li>
         <li>This page rebuilds from the published trade files — nothing here is hand-edited.</li>
@@ -262,6 +285,48 @@ async function load() {
   renderOpen(open);
   renderClosed(closed);
   renderDays(days, files);
+  renderPlans(idx.plans || [], all);
+}
+
+/* ---------- daily plan ---------- */
+async function renderPlans(planDays, allTrades) {
+  const pills = $("plan-pills"), body = $("plan-body");
+  const plans = {};
+  for (const d of planDays) {
+    try { plans[d] = await (await fetch(`data/plans/${d}.json`)).json(); }
+    catch (e) { /* skip missing */ }
+  }
+  const ds = Object.keys(plans).sort().reverse();
+  if (!ds.length) { pills.innerHTML = ""; body.innerHTML = `<div class="loading">No plans published yet.</div>`; return; }
+  pills.innerHTML = ds.map((d, i) => `<button class="pill${i === 0 ? " active" : ""}" data-d="${d}">${d.slice(5)}</button>`).join("");
+  const show = d => {
+    pills.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p.dataset.d === d));
+    body.innerHTML = planHTML(plans[d], allTrades);
+  };
+  pills.querySelectorAll(".pill").forEach(p => p.addEventListener("click", () => show(p.dataset.d)));
+  show(ds[0]);
+}
+
+function fillFor(allTrades, date, ticker) {
+  const t = allTrades.find(t => t.day === date && t.ticker === ticker);
+  if (!t) return `<span style="color:var(--muted)">—</span>`;
+  const st = t.status === "closed" ? `closed ${fmt$(dollars(t.pnl_pct || 0))}` : "open";
+  return `<span class="fillcell"><span class="side ${t.side}">${t.side.toUpperCase()}</span> @ ${t.fill.toFixed(2)} <span style="color:var(--muted);font-size:11.5px">${st}</span></span>`;
+}
+
+function setupRows(list, allTrades, date) {
+  return list.map(s => `<tr><td class="ticker">${esc(s.ticker)}</td><td style="white-space:nowrap">${esc(s.signal)}</td><td class="note">${esc(s.catalyst)}</td><td>${fillFor(allTrades, date, s.ticker)}</td></tr>`).join("");
+}
+
+function planHTML(p, allTrades) {
+  return `
+  <div class="bias"><span class="lbl">Posture — ${esc(p.label || p.date)}</span>${esc(p.bias)}</div>
+  <div class="secttl" style="font-size:16px">Market health</div>
+  <ul class="health">${(p.health || []).map(h => `<li>${esc(h)}</li>`).join("")}</ul>
+  <div class="plan-side"><span class="dotlg" style="background:var(--green)"></span>Long ideas (${(p.longs || []).length})</div>
+  <div class="card tblwrap"><table class="plan-table"><thead><tr><th>Ticker</th><th>Premarket signal</th><th>Catalyst</th><th>Paper fill</th></tr></thead><tbody>${setupRows(p.longs || [], allTrades, p.date)}</tbody></table></div>
+  <div class="plan-side"><span class="dotlg" style="background:var(--red)"></span>Short / avoid (${(p.shorts || []).length})</div>
+  <div class="card tblwrap"><table class="plan-table"><thead><tr><th>Ticker</th><th>Premarket signal</th><th>Catalyst</th><th>Paper fill</th></tr></thead><tbody>${setupRows(p.shorts || [], allTrades, p.date)}</tbody></table></div>`;
 }
 
 /* ---------- interactive day chart ---------- */
