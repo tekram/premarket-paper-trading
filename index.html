@@ -1,32 +1,336 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Premarket Paper Trading</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muse AI Trading — Premarket Paper</title>
 <style>
-body { font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 0 20px; }
-h1 { border-bottom: 2px solid #333; padding-bottom: 10px; }
-table { border-collapse: collapse; width: 100%; margin: 20px 0; }
-th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-th { background: #f5f5f5; }
-.pos { color: green; } .neg { color: red; }
+:root {
+  --bg: #0a0e17;
+  --bg2: #0e1420;
+  --card: #131b2c;
+  --card2: #182236;
+  --border: #22304a;
+  --text: #e8eef7;
+  --muted: #8b9bb4;
+  --green: #22d47b;
+  --green-dim: rgba(34, 212, 123, .12);
+  --red: #ff5d6c;
+  --red-dim: rgba(255, 93, 108, .12);
+  --accent: #6ea8ff;
+  --accent2: #b48cff;
+  --gold: #f5b942;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  background: radial-gradient(1200px 500px at 50% -10%, #16233d 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0 0 60px;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+/* ---------- header ---------- */
+.hero {
+  padding: 44px 0 8px;
+  text-align: left;
+}
+.hero .kicker {
+  display: inline-block;
+  font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--accent); font-weight: 700; margin-bottom: 10px;
+  padding: 5px 12px; border: 1px solid var(--border); border-radius: 999px;
+  background: rgba(110,168,255,.07);
+}
+.hero h1 {
+  font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -1px;
+  background: linear-gradient(92deg, #fff 20%, var(--accent) 60%, var(--accent2) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero p.sub { color: var(--muted); margin-top: 8px; font-size: 15px; max-width: 640px; line-height: 1.55; }
+.badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.badge {
+  font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted); background: var(--card);
+}
+.badge.paper { color: var(--gold); border-color: rgba(245,185,66,.35); background: rgba(245,185,66,.08); }
+/* ---------- KPI cards ---------- */
+.kpis {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px; margin: 26px 0;
+}
+.kpi {
+  background: linear-gradient(180deg, var(--card2), var(--card));
+  border: 1px solid var(--border); border-radius: 14px; padding: 16px;
+}
+.kpi .label { font-size: 11.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; }
+.kpi .value { font-size: 26px; font-weight: 800; margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.5px; }
+.kpi .sub2 { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.pos { color: var(--green); } .neg { color: var(--red); }
+.kpi.hero-kpi { border-color: rgba(110,168,255,.4); }
+/* ---------- sections ---------- */
+section { margin-top: 34px; }
+section h2 { font-size: 20px; font-weight: 750; margin-bottom: 4px; letter-spacing: -.3px; }
+section .desc { color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+.card {
+  background: linear-gradient(180deg, var(--card2), var(--card));
+  border: 1px solid var(--border); border-radius: 16px; padding: 20px;
+}
+/* ---------- chart ---------- */
+#chart { width: 100%; height: auto; display: block; }
+.chart-tip { font-size: 11px; fill: var(--muted); }
+.axis-lbl { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+/* ---------- tables ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+     color: var(--muted); font-weight: 700; padding: 10px 10px; border-bottom: 1px solid var(--border); }
+td { padding: 11px 10px; border-bottom: 1px solid rgba(34,48,74,.6); font-variant-numeric: tabular-nums; vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(110,168,255,.04); }
+.num { text-align: right; }
+.side { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; letter-spacing: .6px; }
+.side.long { color: var(--green); background: var(--green-dim); border: 1px solid rgba(34,212,123,.3); }
+.side.short { color: var(--red); background: var(--red-dim); border: 1px solid rgba(255,93,108,.3); }
+.ticker { font-weight: 750; font-size: 14.5px; }
+/* ---------- day blocks ---------- */
+.day { margin-bottom: 18px; }
+.day-head {
+  display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px;
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+}
+.day-head .d { font-size: 16.5px; font-weight: 750; }
+.day-head .dpnl { font-size: 15px; font-weight: 750; font-variant-numeric: tabular-nums; }
+.trades { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; padding: 16px 20px 20px; }
+.trade {
+  background: rgba(10,14,23,.55); border: 1px solid var(--border); border-radius: 12px; padding: 14px;
+}
+.trade-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.trade .pnl { font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.kv { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin: 10px 0; font-size: 12.5px; }
+.kv .k { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px; font-weight: 700; }
+.kv .v { font-variant-numeric: tabular-nums; font-weight: 600; margin-top: 2px; }
+.why { font-size: 12.8px; line-height: 1.55; color: #c6d2e3; margin-top: 8px; }
+.why b { color: var(--accent); font-size: 11px; text-transform: uppercase; letter-spacing: .8px; display: block; margin-bottom: 2px; }
+.why.exit b { color: var(--gold); }
+/* ---------- methodology ---------- */
+.method { line-height: 1.7; font-size: 14px; color: #c6d2e3; }
+.method h3 { color: #fff; font-size: 15px; margin: 18px 0 6px; }
+.method h3:first-child { margin-top: 0; }
+.method ul { margin: 6px 0 6px 20px; }
+.method li { margin-bottom: 5px; }
+.method code { background: rgba(110,168,255,.1); border: 1px solid var(--border); border-radius: 6px; padding: 1px 7px; font-size: 12.5px; color: var(--accent); }
+footer { margin-top: 40px; color: var(--muted); font-size: 12.5px; text-align: center; line-height: 1.6; }
+footer a { color: var(--accent); text-decoration: none; }
+.loading { color: var(--muted); padding: 30px; text-align: center; }
+@media (max-width: 640px) {
+  .kv { grid-template-columns: 1fr 1fr; }
+  .kpi .value { font-size: 22px; }
+}
 </style>
 </head>
 <body>
-<h1>Premarket Paper Trading</h1>
-<p>Paper trading the daily premarket brief setups. Fill at open, 8% stop / 15% target / 5-day max.</p>
-<h2>Cumulative P&L</h2>
-<div id="summary">Loading...</div>
-<h2>Recent Trades</h2>
-<div id="trades">Loading...</div>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="kicker">Muse AI Trading</span>
+    <h1>Premarket Paper</h1>
+    <p class="sub">An AI-run paper trading playbook. Every weekday morning Muse reads the premarket tape, publishes trade setups, and paper-trades them — filled at the open, managed by fixed rules, tracked here to the cent.</p>
+    <div class="badges">
+      <span class="badge paper">PAPER ONLY — no real money</span>
+      <span class="badge" id="b-updated">updated …</span>
+      <span class="badge">start equity $100,000</span>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"><div class="loading">Loading track record…</div></div>
+
+  <section>
+    <h2>Equity curve</h2>
+    <div class="desc">Cumulative realized P&amp;L on a $100,000 starting book. Percentage points are additive — $1 of move = 0.001%.</div>
+    <div class="card"><svg id="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </section>
+
+  <section>
+    <h2>Open positions</h2>
+    <div class="desc">Live paper book, marked to the last verified close. Unrealized P&amp;L is not banked until exit.</div>
+    <div class="card" style="padding:6px 10px; overflow-x:auto;"><table id="open-table"></table></div>
+  </section>
+
+  <section>
+    <h2>Trades, day by day</h2>
+    <div class="desc">Every setup the brief produced — entry, stop, target, the thesis behind it, and exactly why each closed trade exited.</div>
+    <div id="days"><div class="loading">Loading days…</div></div>
+  </section>
+
+  <section>
+    <h2>Methodology</h2>
+    <div class="card method">
+      <h3>The playbook</h3>
+      <ul>
+        <li>Each weekday premarket, Muse publishes a brief: market health, breadth, and 3–5 long / 2–3 short setups with catalysts.</li>
+        <li>Setups become paper trades <b>filled at the regular-session open</b> — never at a guessed price; unverifiable opens are skipped.</li>
+        <li>Risk rules are fixed: <code>8% stop</code>, <code>15% target</code>, <code>5-trading-day max hold</code>. No discretion, no overrides.</li>
+        <li><b>First-touch accounting:</b> if a session's range touches both stop and target, the exit is whichever printed first intraday (verified with intraday bars).</li>
+        <li>Book starts at <b>$100,000</b>; P&amp;L is tracked in additive percentage points so the equity curve reads in dollars.</li>
+      </ul>
+      <h3>Is this day trading?</h3>
+      <p>Not by design. Nothing is forced to close the same day — positions are <b>short-term swings held 1 to 5 trading days</b>, entered once at the open and managed only by the stop, target, or time stop. In practice these volatile names often resolve in a day or two when a level gets tagged, which can look like day trading on the tape, but there is no intraday entry/exit logic.</p>
+      <h3>How Muse runs it</h3>
+      <ul>
+        <li><b>~7:13 AM CT</b> — premarket brief written (market health, breadth, setups).</li>
+        <li><b>8:50 AM CT</b> — morning logger verifies each setup's official open and books the paper trades.</li>
+        <li><b>4:15 PM CT</b> — exit check verifies every open position's session high/low/close, applies stops/targets/time exits, and publishes official marks.</li>
+        <li>This page rebuilds from the published trade files — nothing here is hand-edited.</li>
+      </ul>
+      <h3>Honest limits</h3>
+      <p>Paper fills assume the open is attainable in size (it often isn't for thin names), there are no commissions or borrow costs on shorts, and gap-opens past a stop still exit at the stop level. Treat this as a measure of the <i>brief's</i> edge, not a tradable return stream.</p>
+    </div>
+  </section>
+
+  <footer>
+    Built and run by <b>Muse</b> · data: <a href="https://github.com/tekram/muse-ai-trading">github.com/tekram/muse-ai-trading</a><br>
+    Paper trading for research — not investment advice, not a recommendation.
+  </footer>
+</div>
+
 <script>
-fetch('data/trades/index.json').then(r => r.json()).then(d => {
-  document.getElementById('summary').innerHTML = '<p>Total P&L: <b>' + d.total_pnl + '%</b> | Win rate: ' + d.win_rate + '% | Trades: ' + d.total_trades + '</p>';
-  let h = '<table><tr><th>Date</th><th>Ticker</th><th>Side</th><th>Fill</th><th>Exit</th><th>P&L%</th></tr>';
-  d.recent.forEach(t => {
-    h += '<tr><td>' + t.date + '</td><td><b>' + t.ticker + '</b></td><td>' + t.side + '</td><td>' + t.fill + '</td><td>' + t.exit + '</td><td class="' + (t.pnl >= 0 ? 'pos' : 'neg') + '">' + t.pnl + '%</td></tr>';
+const START_EQUITY = 100000;
+const $ = id => document.getElementById(id);
+const fmt$ = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString("en-US", {maximumFractionDigits: 0});
+const fmtPct = n => (n > 0 ? "+" : "") + n.toFixed(2) + "%";
+const cls = n => n >= 0 ? "pos" : "neg";
+const unreal = t => {
+  if (t.status !== "open" || t.mark == null) return null;
+  return t.side === "long" ? (t.mark - t.fill) / t.fill * 100 : (t.fill - t.mark) / t.fill * 100;
+};
+
+async function load() {
+  const idx = await (await fetch("data/trades/index.json")).json();
+  const days = (idx.days || []).slice().sort();
+  const files = {};
+  for (const d of days) {
+    try { files[d] = await (await fetch(`data/trades/${d}.json`)).json(); }
+    catch (e) { /* skip missing */ }
+  }
+  const all = [];
+  for (const d of days) {
+    const f = files[d]; if (!f) continue;
+    for (const s of ["longs", "shorts"]) for (const t of (f[s] || []))
+      all.push({...t, day: d});
+  }
+  const closed = all.filter(t => t.status === "closed")
+    .sort((a, b) => (a.exit_date || a.day).localeCompare(b.exit_date || b.day) || a.ticker.localeCompare(b.ticker));
+  const open = all.filter(t => t.status === "open");
+
+  const realizedPct = closed.reduce((s, t) => s + (t.pnl_pct || 0), 0);
+  const equity = START_EQUITY * (1 + realizedPct / 100);
+  const wins = closed.filter(t => (t.pnl_pct || 0) > 0).length;
+  const openPct = open.reduce((s, t) => s + (unreal(t) || 0), 0);
+  const open$ = START_EQUITY * openPct / 100;
+
+  $("b-updated").textContent = "updated " + (idx.updated_at ? idx.updated_at.slice(0, 10) : "recently");
+
+  $("kpis").innerHTML = `
+    <div class="kpi hero-kpi"><div class="label">Equity</div><div class="value">${fmt$(equity)}</div><div class="sub2">from $100,000 · realized</div></div>
+    <div class="kpi"><div class="label">Realized P&amp;L</div><div class="value ${cls(realizedPct)}">${fmt$(START_EQUITY*realizedPct/100)}</div><div class="sub2">${fmtPct(realizedPct)} · ${closed.length} closed</div></div>
+    <div class="kpi"><div class="label">Open P&amp;L</div><div class="value ${cls(openPct)}">${openPct === 0 && open.every(t=>unreal(t)===null) ? "—" : fmt$(open$)}</div><div class="sub2">${openPct === 0 && open.every(t=>unreal(t)===null) ? "no marks" : fmtPct(openPct) + " unrealized · " + open.length + " open"}</div></div>
+    <div class="kpi"><div class="label">Win rate</div><div class="value">${closed.length ? Math.round(wins/closed.length*100) : 0}%</div><div class="sub2">${wins}W / ${closed.length-wins}L</div></div>
+    <div class="kpi"><div class="label">Total P&amp;L</div><div class="value ${cls(realizedPct+openPct)}">${fmtPct(realizedPct+openPct)}</div><div class="sub2">realized + open</div></div>`;
+
+  drawChart(closed);
+  renderOpen(open);
+  renderDays(days, files);
+}
+
+function drawChart(closed) {
+  const svg = $("chart");
+  const W = 900, H = 320, P = {l: 64, r: 18, t: 18, b: 30};
+  let pts = [{eq: START_EQUITY, label: "start"}];
+  let eq = START_EQUITY;
+  for (const t of closed) { eq += START_EQUITY * (t.pnl_pct || 0) / 100; pts.push({eq, t}); }
+  const min = Math.min(START_EQUITY, ...pts.map(p => p.eq));
+  const max = Math.max(START_EQUITY, ...pts.map(p => p.eq));
+  const pad = Math.max((max - min) * 0.12, START_EQUITY * 0.01);
+  const y = v => P.t + (1 - (v - (min - pad)) / ((max + pad) - (min - pad))) * (H - P.t - P.b);
+  const x = i => P.l + i / Math.max(pts.length - 1, 1) * (W - P.l - P.r);
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.eq).toFixed(1)}`).join(" ");
+  const up = pts[pts.length-1].eq >= START_EQUITY;
+  const col = up ? "#22d47b" : "#ff5d6c";
+  let s = `<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>`;
+  // gridlines
+  for (const f of [0, .25, .5, .75, 1]) {
+    const v = (min - pad) + f * ((max + pad) - (min - pad));
+    const yy = y(v);
+    s += `<line x1="${P.l}" y1="${yy}" x2="${W-P.r}" y2="${yy}" stroke="#22304a" stroke-width="1" opacity=".6"/>`;
+    s += `<text x="${P.l-8}" y="${yy+4}" text-anchor="end" class="axis-lbl">${fmt$(v)}</text>`;
+  }
+  // start baseline
+  s += `<line x1="${P.l}" y1="${y(START_EQUITY)}" x2="${W-P.r}" y2="${y(START_EQUITY)}" stroke="#8b9bb4" stroke-dasharray="5,5" stroke-width="1" opacity=".7"/>`;
+  s += `<path d="${line} L${x(pts.length-1)},${H-P.b} L${x(0)},${H-P.b} Z" fill="url(#ag)"/>`;
+  s += `<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  pts.forEach((p, i) => {
+    if (!p.t) return;
+    const tt = `${p.t.ticker} ${p.t.side} · exited ${p.t.exit_date || ""} · ${fmtPct(p.t.pnl_pct||0)}`;
+    s += `<circle cx="${x(i)}" cy="${y(p.eq)}" r="5" fill="${(p.t.pnl_pct||0)>=0?"#22d47b":"#ff5d6c"}" stroke="#0a0e17" stroke-width="2"><title>${tt}</title></circle>`;
+    if (pts.length <= 14 || i % Math.ceil(pts.length/12) === 0)
+      s += `<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="chart-tip">${(p.t.exit_date||"").slice(5)}</text>`;
   });
-  document.getElementById('trades').innerHTML = h + '</table>';
-}).catch(e => { document.getElementById('summary').innerHTML = 'No trades yet.'; document.getElementById('trades').innerHTML = ''; });
+  svg.innerHTML = s;
+}
+
+function renderOpen(open) {
+  const el = $("open-table");
+  if (!open.length) { el.innerHTML = `<tr><td style="padding:20px;color:var(--muted)">No open positions.</td></tr>`; return; }
+  let h = `<thead><tr><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Mark</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized</th><th>Thesis</th></tr></thead><tbody>`;
+  for (const t of open) {
+    const u = unreal(t);
+    h += `<tr><td class="ticker">${t.ticker}</td><td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
+      <td class="num">${t.fill.toFixed(2)}</td><td class="num">${t.mark != null ? t.mark.toFixed(2) : "—"}</td>
+      <td class="num">${t.stop.toFixed(2)}</td><td class="num">${t.target.toFixed(2)}</td>
+      <td class="num ${u == null ? "" : cls(u)}">${u == null ? "—" : fmtPct(u)}</td>
+      <td style="max-width:280px;font-size:12.5px;color:#c6d2e3">${t.thesis || ""}</td></tr>`;
+  }
+  el.innerHTML = h + "</tbody>";
+}
+
+function renderDays(days, files) {
+  const el = $("days");
+  let h = "";
+  for (const d of days.slice().reverse()) {
+    const f = files[d]; if (!f) continue;
+    const trades = [...(f.longs||[]), ...(f.shorts||[])];
+    const dayReal = trades.filter(t=>t.status==="closed").reduce((s,t)=>s+(t.pnl_pct||0),0);
+    const nOpen = trades.filter(t=>t.status==="open").length;
+    h += `<div class="card day"><div class="day-head"><span class="d">${d} <span style="color:var(--muted);font-weight:400;font-size:13px">· ${trades.length} setups${nOpen?` · ${nOpen} open`:""}</span></span>
+      <span class="dpnl ${cls(dayReal)}">${dayReal ? fmtPct(dayReal)+" realized" : "—"}</span></div><div class="trades">`;
+    for (const t of trades) {
+      const u = unreal(t);
+      const pnl = t.status === "closed" ? t.pnl_pct : u;
+      h += `<div class="trade"><div class="trade-top">
+          <span><span class="ticker">${t.ticker}</span> <span class="side ${t.side}">${t.side.toUpperCase()}</span></span>
+          <span class="pnl ${pnl == null ? "" : cls(pnl)}">${pnl == null ? (t.status==="open"?"open":"—") : fmtPct(pnl)}</span></div>
+        <div class="kv">
+          <div><div class="k">Entry</div><div class="v">${t.fill.toFixed(2)}</div></div>
+          <div><div class="k">Stop</div><div class="v" style="color:var(--red)">${t.stop.toFixed(2)}</div></div>
+          <div><div class="k">Target</div><div class="v" style="color:var(--green)">${t.target.toFixed(2)}</div></div>
+          <div><div class="k">${t.status==="closed"?"Exit":"Mark"}</div><div class="v">${t.status==="closed" ? t.exit.toFixed(2)+" · "+(t.exit_date||"") : (t.mark!=null?t.mark.toFixed(2):"—")}</div></div>
+          <div><div class="k">Filled</div><div class="v">${t.fill_date||""}</div></div>
+          <div><div class="k">Status</div><div class="v">${t.status}</div></div>
+        </div>
+        ${t.thesis ? `<div class="why"><b>Why we took it</b>${t.thesis}</div>` : ""}
+        ${t.exit_reason ? `<div class="why exit"><b>Why we exited</b>${t.exit_reason}</div>` : ""}
+      </div>`;
+    }
+    h += `</div></div>`;
+  }
+  el.innerHTML = h || `<div class="loading">No trading days yet.</div>`;
+}
+
+load().catch(e => {
+  $("kpis").innerHTML = `<div class="loading">Couldn't load trade data.</div>`;
+  $("days").innerHTML = "";
+});
 </script>
 </body>
 </html>
