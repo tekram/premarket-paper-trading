@@ -127,6 +127,11 @@ footer a { color: var(--accent); text-decoration: none; }
 .plan-side .dotlg { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .plan-table td:first-child { white-space: nowrap; }
 .fillcell { white-space: nowrap; }
+/* ---------- chart legend ---------- */
+.legend { display: flex; gap: 20px; margin-bottom: 10px; font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
+.legend .lg { display: inline-flex; align-items: center; }
+.legend .sw { width: 24px; height: 3px; border-radius: 2px; margin-right: 7px; background: var(--green); display: inline-block; }
+.legend .sw.dash { background: repeating-linear-gradient(90deg, var(--muted) 0 5px, transparent 5px 9px); }
 @media (max-width: 640px) { .kv { grid-template-columns: 1fr 1fr; } .kpi .value { font-size: 22px; } .tab { padding: 10px 10px; font-size: 13px; } }
 </style>
 </head>
@@ -157,8 +162,8 @@ footer a { color: var(--accent); text-decoration: none; }
   <div class="tabpane active" id="pane-overview">
     <div class="kpis" id="kpis"><div class="loading">Loading track record…</div></div>
     <div class="secttl">Cumulative P&amp;L</div>
-    <div class="secdesc">Realized profit in dollars, day by day, at $10,000 notional per trade. Hover any day for its activity — trades taken and closed. Click a day to jump to its detail.</div>
-    <div class="card"><div class="chart-wrap"><svg id="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg><div id="chart-tip"></div></div></div>
+    <div class="secdesc">Realized profit in dollars, day by day, at $10,000 notional per trade — against a $10,000 SPY buy-and-hold benchmark (dashed gray). Hover any day for its activity — trades taken and closed. Click a day to jump to its detail.</div>
+    <div class="card"><div class="legend"><span class="lg"><span class="sw" id="lg-paper"></span>Paper P&amp;L ($10k/trade)</span><span class="lg"><span class="sw dash"></span>SPY buy-and-hold ($10k)</span></div><div class="chart-wrap"><svg id="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg><div id="chart-tip"></div></div></div>
   </div>
 
   <div class="tabpane" id="pane-plan">
@@ -202,6 +207,7 @@ footer a { color: var(--accent); text-decoration: none; }
         <li>Every setup is booked at <b>$10,000 notional</b>. Dollar P&amp;L per trade = $10,000 × per-trade %.</li>
         <li>Totals are <b>additive</b>: total $ = $10,000 × (sum of per-trade %). The per-trade percentages are the signal; dollars make them tangible.</li>
         <li>This is <b>not a portfolio return</b>. Summed percentages assume each trade stood alone — with up to 14 concurrent positions, gross notional has peaked at $140,000 against the $100,000 reference book. Read totals as <i>signal P&amp;L</i>, not a literal account balance.</li>
+        <li>The equity chart benchmarks against a <b>$10,000 SPY buy-and-hold</b> from Oct 7, 2026 (dashed line) — same dollars, no leverage, refreshed each evening.</li>
       </ul>
       <h3>Is this day trading?</h3>
       <p>Not by design. Nothing is forced to close the same day — positions are <b>short-term swings held 1 to 5 trading days</b>, entered once at the open and managed only by the stop, target, or time stop. In practice these volatile names often resolve in a day or two when a level gets tagged, which can look like day trading on the tape, but there is no intraday entry/exit logic.</p>
@@ -281,12 +287,21 @@ async function load() {
     <div class="kpi"><div class="label">Open P&amp;L</div><div class="value ${cls(open$)}">${fmt$(open$)}</div><div class="sub2">${fmtPct(openPct)} pts unrealized · ${open.length} open</div></div>
     <div class="kpi"><div class="label">Win rate</div><div class="value">${closed.length ? Math.round(wins / closed.length * 100) : 0}%</div><div class="sub2">${wins}W / ${closed.length - wins}L · closed trades</div></div>`;
 
-  drawChart(all, days);
+  drawChart(all, days, await loadSpy());
   renderOpen(open);
   renderClosed(closed);
   renderDays(days, files);
   renderPlans(idx.plans || [], all);
 }
+
+async function loadSpy() {
+  try { return await (await fetch("data/benchmarks/spy.json")).json(); }
+  catch (e) { return null; }
+}
+const spyVal = (spy, date) => {
+  if (!spy || !spy.closes || spy.closes[date] == null || !spy.base_close) return null;
+  return NOTIONAL * (spy.closes[date] / spy.base_close - 1);
+};
 
 /* ---------- daily plan ---------- */
 async function renderPlans(planDays, allTrades) {
@@ -330,7 +345,7 @@ function planHTML(p, allTrades) {
 }
 
 /* ---------- interactive day chart ---------- */
-function drawChart(all, days) {
+function drawChart(all, days, spy) {
   const svg = $("chart"), tip = $("chart-tip"), wrap = svg.closest(".chart-wrap");
   const W = 900, H = 320, P = {l: 76, r: 18, t: 18, b: 34};
 
@@ -339,13 +354,14 @@ function drawChart(all, days) {
     const taken = all.filter(t => t.day === d);
     const shut = all.filter(t => t.status === "closed" && (t.exit_date || t.day) === d);
     const day$ = dollars(shut.reduce((s, t) => s + (t.pnl_pct || 0), 0));
-    return {date: d, taken, shut, day$};
+    return {date: d, taken, shut, day$, spy$: spyVal(spy, d)};
   }).filter(s => s.taken.length || s.shut.length);
   let cum = 0;
   stats.forEach(s => { cum += s.day$; s.cum$ = cum; });
 
-  const min = Math.min(0, ...stats.map(s => s.cum$));
-  const max = Math.max(0, ...stats.map(s => s.cum$));
+  const vals = stats.flatMap(s => [s.cum$, s.spy$ == null ? 0 : s.spy$]);
+  const min = Math.min(0, ...vals);
+  const max = Math.max(0, ...vals);
   const pad = Math.max((max - min) * 0.15, 500);
   const y = v => P.t + (1 - (v - (min - pad)) / ((max + pad) - (min - pad))) * (H - P.t - P.b);
   const x = i => P.l + (stats.length === 1 ? (W - P.l - P.r) / 2 : i / (stats.length - 1) * (W - P.l - P.r));
@@ -365,6 +381,18 @@ function drawChart(all, days) {
     const line = stats.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.cum$).toFixed(1)}`).join(" ");
     s += `<path d="${line} L${x(stats.length - 1).toFixed(1)},${H - P.b} L${x(0).toFixed(1)},${H - P.b} Z" fill="url(#ag)"/>`;
     s += `<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    // SPY benchmark (dashed)
+    const spyPts = stats.map((p, i) => ({i, v: p.spy$})).filter(p => p.v != null);
+    if (spyPts.length > 1) {
+      const sline = spyPts.map(p => `${p.i === spyPts[0].i ? "M" : "L"}${x(p.i).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ");
+      s += `<path d="${sline}" fill="none" stroke="#8b9bb4" stroke-width="2" stroke-dasharray="7,5" opacity=".85"/>`;
+      spyPts.forEach(p => {
+        s += `<circle cx="${x(p.i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3.5" fill="#8b9bb4" opacity=".9"/>`;
+      });
+    } else if (spyPts.length === 1) {
+      const p = spyPts[0];
+      s += `<circle cx="${x(p.i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3.5" fill="#8b9bb4" opacity=".9"/>`;
+    }
     stats.forEach((p, i) => {
       const cx = x(i).toFixed(1), cy = y(p.cum$).toFixed(1);
       const dotCol = p.day$ > 0 ? "#22d47b" : p.day$ < 0 ? "#ff5d6c" : "#8b9bb4";
@@ -391,6 +419,7 @@ function drawChart(all, days) {
     }
     h += `<div class="tt-tot"><span>Day</span><span class="${cls(p.day$)}">${fmt$(p.day$)}</span></div>`;
     h += `<div class="tt-tot" style="border:none;margin-top:2px;padding-top:0"><span>Cumulative</span><span class="${cls(p.cum$)}">${fmt$(p.cum$)}</span></div>`;
+    if (p.spy$ != null) h += `<div class="tt-line" style="margin-top:6px"><span style="color:var(--muted)">SPY $10k B&amp;H</span><span class="${cls(p.spy$)}">${fmt$(p.spy$)}</span></div>`;
     h += `<div class="tt-hint">Click to jump to this day ↓</div>`;
     tip.innerHTML = h;
     tip.style.display = "block";
