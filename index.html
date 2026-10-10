@@ -6,38 +6,24 @@
 <title>Muse AI Trading — Premarket Paper</title>
 <style>
 :root {
-  --bg: #0a0e17;
-  --bg2: #0e1420;
-  --card: #131b2c;
-  --card2: #182236;
-  --border: #22304a;
-  --text: #e8eef7;
-  --muted: #8b9bb4;
-  --green: #22d47b;
-  --green-dim: rgba(34, 212, 123, .12);
-  --red: #ff5d6c;
-  --red-dim: rgba(255, 93, 108, .12);
-  --accent: #6ea8ff;
-  --accent2: #b48cff;
-  --gold: #f5b942;
+  --bg: #0a0e17; --card: #131b2c; --card2: #182236; --border: #22304a;
+  --text: #e8eef7; --muted: #8b9bb4;
+  --green: #22d47b; --green-dim: rgba(34,212,123,.12);
+  --red: #ff5d6c; --red-dim: rgba(255,93,108,.12);
+  --accent: #6ea8ff; --accent2: #b48cff; --gold: #f5b942;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
   background: radial-gradient(1200px 500px at 50% -10%, #16233d 0%, var(--bg) 60%) fixed, var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 0 0 60px;
+  color: var(--text); min-height: 100vh; padding: 0 0 60px;
 }
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
-/* ---------- header ---------- */
-.hero { padding: 44px 0 8px; text-align: left; }
+.hero { padding: 40px 0 6px; }
 .hero .kicker {
-  display: inline-block;
-  font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--accent); font-weight: 700; margin-bottom: 10px;
-  padding: 5px 12px; border: 1px solid var(--border); border-radius: 999px;
-  background: rgba(110,168,255,.07);
+  display: inline-block; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--accent); font-weight: 700; margin-bottom: 10px; padding: 5px 12px;
+  border: 1px solid var(--border); border-radius: 999px; background: rgba(110,168,255,.07);
 }
 .hero h1 {
   font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -1px;
@@ -46,13 +32,19 @@ body {
 }
 .hero p.sub { color: var(--muted); margin-top: 8px; font-size: 15px; max-width: 660px; line-height: 1.55; }
 .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-.badge {
-  font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px;
-  border: 1px solid var(--border); color: var(--muted); background: var(--card);
-}
+.badge { font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); background: var(--card); }
 .badge.paper { color: var(--gold); border-color: rgba(245,185,66,.35); background: rgba(245,185,66,.08); }
+/* ---------- tabs ---------- */
+.tabs { display: flex; gap: 6px; margin: 24px 0 4px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+.tab { font: inherit; font-size: 14px; font-weight: 700; color: var(--muted); background: none; border: none; border-bottom: 3px solid transparent; padding: 10px 16px; cursor: pointer; margin-bottom: -1px; }
+.tab .count { font-size: 11px; font-weight: 800; background: var(--card2); border: 1px solid var(--border); border-radius: 999px; padding: 1px 8px; margin-left: 6px; }
+.tab:hover { color: var(--text); }
+.tab.active { color: #fff; border-bottom-color: var(--accent); }
+.tab.active .count { background: rgba(110,168,255,.15); border-color: rgba(110,168,255,.4); color: var(--accent); }
+.tabpane { display: none; padding-top: 18px; }
+.tabpane.active { display: block; }
 /* ---------- KPI cards ---------- */
-.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 26px 0; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 6px 0 22px; }
 .kpi { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
 .kpi .label { font-size: 11.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; }
 .kpi .value { font-size: 26px; font-weight: 800; margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.5px; }
@@ -60,35 +52,50 @@ body {
 .pos { color: var(--green); } .neg { color: var(--red); }
 .kpi.hero-kpi { border-color: rgba(110,168,255,.4); }
 /* ---------- sections ---------- */
-section { margin-top: 34px; }
-section h2 { font-size: 20px; font-weight: 750; margin-bottom: 4px; letter-spacing: -.3px; }
-section .desc { color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
-.card { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+.secttl { font-size: 20px; font-weight: 750; margin-bottom: 4px; letter-spacing: -.3px; }
+.secdesc { color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+.card { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 22px; }
 /* ---------- chart ---------- */
+.chart-wrap { position: relative; }
 #chart { width: 100%; height: auto; display: block; }
-.chart-tip { font-size: 11px; fill: var(--muted); }
 .axis-lbl { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.dot { cursor: pointer; }
+.halo { cursor: pointer; }
+#chart-tip {
+  position: absolute; z-index: 20; display: none; pointer-events: none;
+  background: #0d1322; border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; min-width: 230px; max-width: 300px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.55); font-size: 12.5px; line-height: 1.5;
+}
+#chart-tip .tt-date { font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+#chart-tip .tt-sec { margin-top: 8px; }
+#chart-tip .tt-sec .lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-weight: 700; display: block; margin-bottom: 3px; }
+#chart-tip .tt-line { display: flex; justify-content: space-between; gap: 14px; font-variant-numeric: tabular-nums; padding: 1px 0; }
+#chart-tip .tt-tot { display: flex; justify-content: space-between; gap: 14px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-weight: 800; font-variant-numeric: tabular-nums; }
+#chart-tip .tt-hint { margin-top: 6px; font-size: 11px; color: var(--muted); }
 /* ---------- tables ---------- */
 table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
-     color: var(--muted); font-weight: 700; padding: 10px 10px; border-bottom: 1px solid var(--border); }
+th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; padding: 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
 td { padding: 11px 10px; border-bottom: 1px solid rgba(34,48,74,.6); font-variant-numeric: tabular-nums; vertical-align: top; }
 tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: rgba(110,168,255,.04); }
-.num { text-align: right; }
-.side { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; letter-spacing: .6px; }
+.num { text-align: right; white-space: nowrap; }
+.side { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; letter-spacing: .6px; white-space: nowrap; }
 .side.long { color: var(--green); background: var(--green-dim); border: 1px solid rgba(34,212,123,.3); }
 .side.short { color: var(--red); background: var(--red-dim); border: 1px solid rgba(255,93,108,.3); }
 .ticker { font-weight: 750; font-size: 14.5px; }
+.note { font-size: 12.3px; color: #c6d2e3; line-height: 1.5; max-width: 340px; }
+.note .lbl { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px; font-weight: 700; display: block; }
+.tblwrap { overflow-x: auto; padding: 6px 10px; }
 /* ---------- day blocks ---------- */
-.day { margin-bottom: 18px; }
+.day { margin-bottom: 18px; scroll-margin-top: 20px; }
 .day-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
 .day-head .d { font-size: 16.5px; font-weight: 750; }
 .day-head .dpnl { font-size: 15px; font-weight: 750; font-variant-numeric: tabular-nums; }
 .trades { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; padding: 16px 20px 20px; }
 .trade { background: rgba(10,14,23,.55); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
 .trade-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.trade .pnl { font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.trade .pnl { font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; }
 .trade .pnl small { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
 .kv { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin: 10px 0; font-size: 12.5px; }
 .kv .k { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px; font-weight: 700; }
@@ -106,7 +113,7 @@ tbody tr:hover { background: rgba(110,168,255,.04); }
 footer { margin-top: 40px; color: var(--muted); font-size: 12.5px; text-align: center; line-height: 1.6; }
 footer a { color: var(--accent); text-decoration: none; }
 .loading { color: var(--muted); padding: 30px; text-align: center; }
-@media (max-width: 640px) { .kv { grid-template-columns: 1fr 1fr; } .kpi .value { font-size: 22px; } }
+@media (max-width: 640px) { .kv { grid-template-columns: 1fr 1fr; } .kpi .value { font-size: 22px; } .tab { padding: 10px 10px; font-size: 13px; } }
 </style>
 </head>
 <body>
@@ -123,28 +130,42 @@ footer a { color: var(--accent); text-decoration: none; }
     </div>
   </div>
 
-  <div class="kpis" id="kpis"><div class="loading">Loading track record…</div></div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-pane="overview">Overview</button>
+    <button class="tab" data-pane="open">Open <span class="count" id="c-open">–</span></button>
+    <button class="tab" data-pane="closed">Closed <span class="count" id="c-closed">–</span></button>
+    <button class="tab" data-pane="byday">By day</button>
+    <button class="tab" data-pane="method">Methodology</button>
+  </div>
 
-  <section>
-    <h2>Cumulative P&amp;L</h2>
-    <div class="desc">Realized profit in dollars, trade by trade, at $10,000 notional each. Starts at $0.</div>
-    <div class="card"><svg id="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg></div>
-  </section>
+  <div class="tabpane active" id="pane-overview">
+    <div class="kpis" id="kpis"><div class="loading">Loading track record…</div></div>
+    <div class="secttl">Cumulative P&amp;L</div>
+    <div class="secdesc">Realized profit in dollars, day by day, at $10,000 notional per trade. Hover any day for its activity — trades taken and closed. Click a day to jump to its detail.</div>
+    <div class="card"><div class="chart-wrap"><svg id="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg><div id="chart-tip"></div></div></div>
+  </div>
 
-  <section>
-    <h2>Open positions</h2>
-    <div class="desc">Live paper book, marked to the last verified close. Unrealized dollars are not banked until exit.</div>
-    <div class="card" style="padding:6px 10px; overflow-x:auto;"><table id="open-table"></table></div>
-  </section>
+  <div class="tabpane" id="pane-open">
+    <div class="secttl">Open positions</div>
+    <div class="secdesc">Live paper book, marked to the last verified close. Unrealized dollars are not banked until exit.</div>
+    <div class="card tblwrap"><table id="open-table"></table></div>
+  </div>
 
-  <section>
-    <h2>Trades, day by day</h2>
-    <div class="desc">Every setup the brief produced — entry, stop, target, dollar P&amp;L, the thesis behind it, and exactly why each closed trade exited.</div>
+  <div class="tabpane" id="pane-closed">
+    <div class="secttl">Closed trades</div>
+    <div class="secdesc">Every completed round trip — entry, exit, dollar result, and exactly why it exited.</div>
+    <div class="card tblwrap"><table id="closed-table"></table></div>
+  </div>
+
+  <div class="tabpane" id="pane-byday">
+    <div class="secttl">Trades, day by day</div>
+    <div class="secdesc">Every setup the brief produced — entry, stop, target, dollar P&amp;L, the thesis behind it, and exit reasons.</div>
     <div id="days"><div class="loading">Loading days…</div></div>
-  </section>
+  </div>
 
-  <section>
-    <h2>Methodology</h2>
+  <div class="tabpane" id="pane-method">
+    <div class="secttl">Methodology</div>
+    <div class="secdesc">The rules, the dollar accounting, and how Muse runs this book.</div>
     <div class="card method">
       <h3>The playbook</h3>
       <ul>
@@ -171,7 +192,7 @@ footer a { color: var(--accent); text-decoration: none; }
       <h3>Honest limits</h3>
       <p>Paper fills assume the open is attainable in size (it often isn't for thin names), there are no commissions or borrow costs on shorts, and gap-opens past a stop still exit at the stop level. Small sample: 5 closed trades so far — an 80% win rate means almost nothing yet. Treat this as a measure of the <i>brief's</i> edge, not a tradable return stream.</p>
     </div>
-  </section>
+  </div>
 
   <footer>
     Built and run by <b>Muse</b> · data: <a href="https://github.com/tekram/muse-ai-trading">github.com/tekram/muse-ai-trading</a><br>
@@ -191,6 +212,15 @@ const unreal = t => {
   if (t.status !== "open" || t.mark == null) return null;
   return t.side === "long" ? (t.mark - t.fill) / t.fill * 100 : (t.fill - t.mark) / t.fill * 100;
 };
+const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+function switchTab(name) {
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.pane === name));
+  document.querySelectorAll(".tabpane").forEach(p => p.classList.toggle("active", p.id === "pane-" + name));
+}
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => switchTab(btn.dataset.pane));
+});
 
 async function load() {
   const idx = await (await fetch("data/trades/index.json")).json();
@@ -218,64 +248,137 @@ async function load() {
   const total$ = realized$ + open$;
 
   $("b-updated").textContent = "updated " + (idx.updated_at ? idx.updated_at.slice(0, 10) : "recently");
+  $("c-open").textContent = open.length;
+  $("c-closed").textContent = closed.length;
 
   $("kpis").innerHTML = `
-    <div class="kpi hero-kpi"><div class="label">Total P&amp;L</div><div class="value ${cls(total$)}">${fmt$(total$)}</div><div class="sub2">${fmtPct(realizedPct + openPct)} · realized + open</div></div>
-    <div class="kpi"><div class="label">Realized P&amp;L</div><div class="value ${cls(realized$)}">${fmt$(realized$)}</div><div class="sub2">${fmtPct(realizedPct)} · ${closed.length} closed trades</div></div>
-    <div class="kpi"><div class="label">Open P&amp;L</div><div class="value ${cls(open$)}">${fmt$(open$)}</div><div class="sub2">${fmtPct(openPct)} unrealized · ${open.length} open</div></div>
-    <div class="kpi"><div class="label">Win rate</div><div class="value">${closed.length ? Math.round(wins / closed.length * 100) : 0}%</div><div class="sub2">${wins}W / ${closed.length - wins}L · ${closed.length} closed</div></div>`;
+    <div class="kpi hero-kpi"><div class="label">Total P&amp;L</div><div class="value ${cls(total$)}">${fmt$(total$)}</div><div class="sub2">${fmtPct(realizedPct + openPct)} pts · realized + open</div></div>
+    <div class="kpi"><div class="label">Realized P&amp;L</div><div class="value ${cls(realized$)}">${fmt$(realized$)}</div><div class="sub2">${fmtPct(realizedPct)} pts · ${closed.length} closed</div></div>
+    <div class="kpi"><div class="label">Open P&amp;L</div><div class="value ${cls(open$)}">${fmt$(open$)}</div><div class="sub2">${fmtPct(openPct)} pts unrealized · ${open.length} open</div></div>
+    <div class="kpi"><div class="label">Win rate</div><div class="value">${closed.length ? Math.round(wins / closed.length * 100) : 0}%</div><div class="sub2">${wins}W / ${closed.length - wins}L · closed trades</div></div>`;
 
-  drawChart(closed);
+  drawChart(all, days);
   renderOpen(open);
+  renderClosed(closed);
   renderDays(days, files);
 }
 
-function drawChart(closed) {
-  const svg = $("chart");
-  const W = 900, H = 320, P = {l: 76, r: 18, t: 18, b: 30};
-  let pts = [{v: 0, label: "start"}];
+/* ---------- interactive day chart ---------- */
+function drawChart(all, days) {
+  const svg = $("chart"), tip = $("chart-tip"), wrap = svg.closest(".chart-wrap");
+  const W = 900, H = 320, P = {l: 76, r: 18, t: 18, b: 34};
+
+  // per-day activity
+  const stats = days.map(d => {
+    const taken = all.filter(t => t.day === d);
+    const shut = all.filter(t => t.status === "closed" && (t.exit_date || t.day) === d);
+    const day$ = dollars(shut.reduce((s, t) => s + (t.pnl_pct || 0), 0));
+    return {date: d, taken, shut, day$};
+  }).filter(s => s.taken.length || s.shut.length);
   let cum = 0;
-  for (const t of closed) { cum += dollars(t.pnl_pct || 0); pts.push({v: cum, t}); }
-  const min = Math.min(0, ...pts.map(p => p.v));
-  const max = Math.max(0, ...pts.map(p => p.v));
+  stats.forEach(s => { cum += s.day$; s.cum$ = cum; });
+
+  const min = Math.min(0, ...stats.map(s => s.cum$));
+  const max = Math.max(0, ...stats.map(s => s.cum$));
   const pad = Math.max((max - min) * 0.15, 500);
   const y = v => P.t + (1 - (v - (min - pad)) / ((max + pad) - (min - pad))) * (H - P.t - P.b);
-  const x = i => P.l + i / Math.max(pts.length - 1, 1) * (W - P.l - P.r);
-  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ");
-  const up = pts[pts.length - 1].v >= 0;
+  const x = i => P.l + (stats.length === 1 ? (W - P.l - P.r) / 2 : i / (stats.length - 1) * (W - P.l - P.r));
+  const up = (stats.length ? stats[stats.length - 1].cum$ : 0) >= 0;
   const col = up ? "#22d47b" : "#ff5d6c";
+
   let s = `<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>`;
   for (const f of [0, .25, .5, .75, 1]) {
     const v = (min - pad) + f * ((max + pad) - (min - pad));
     const yy = y(v);
-    s += `<line x1="${P.l}" y1="${yy}" x2="${W-P.r}" y2="${yy}" stroke="#22304a" stroke-width="1" opacity=".6"/>`;
-    s += `<text x="${P.l-8}" y="${yy+4}" text-anchor="end" class="axis-lbl">${fmt$plain(Math.round(v))}</text>`;
+    s += `<line x1="${P.l}" y1="${yy.toFixed(1)}" x2="${W - P.r}" y2="${yy.toFixed(1)}" stroke="#22304a" stroke-width="1" opacity=".6"/>`;
+    s += `<text x="${P.l - 8}" y="${(yy + 4).toFixed(1)}" text-anchor="end" class="axis-lbl">${fmt$plain(Math.round(v))}</text>`;
   }
-  s += `<line x1="${P.l}" y1="${y(0)}" x2="${W-P.r}" y2="${y(0)}" stroke="#8b9bb4" stroke-dasharray="5,5" stroke-width="1" opacity=".7"/>`;
-  s += `<path d="${line} L${x(pts.length-1)},${H-P.b} L${x(0)},${H-P.b} Z" fill="url(#ag)"/>`;
-  s += `<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>`;
-  pts.forEach((p, i) => {
-    if (!p.t) return;
-    const tt = `${p.t.ticker} ${p.t.side} · exited ${p.t.exit_date || ""} · ${fmt$(dollars(p.t.pnl_pct || 0))} (${fmtPct(p.t.pnl_pct || 0)})`;
-    s += `<circle cx="${x(i)}" cy="${y(p.v)}" r="5" fill="${(p.t.pnl_pct || 0) >= 0 ? "#22d47b" : "#ff5d6c"}" stroke="#0a0e17" stroke-width="2"><title>${tt}</title></circle>`;
-    if (pts.length <= 14 || i % Math.ceil(pts.length / 12) === 0)
-      s += `<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="chart-tip">${(p.t.exit_date || "").slice(5)}</text>`;
-  });
+  s += `<line x1="${P.l}" y1="${y(0).toFixed(1)}" x2="${W - P.r}" y2="${y(0).toFixed(1)}" stroke="#8b9bb4" stroke-dasharray="5,5" stroke-width="1" opacity=".7"/>`;
+  if (stats.length) {
+    const line = stats.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.cum$).toFixed(1)}`).join(" ");
+    s += `<path d="${line} L${x(stats.length - 1).toFixed(1)},${H - P.b} L${x(0).toFixed(1)},${H - P.b} Z" fill="url(#ag)"/>`;
+    s += `<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    stats.forEach((p, i) => {
+      const cx = x(i).toFixed(1), cy = y(p.cum$).toFixed(1);
+      const dotCol = p.day$ > 0 ? "#22d47b" : p.day$ < 0 ? "#ff5d6c" : "#8b9bb4";
+      s += `<circle class="halo" data-i="${i}" cx="${cx}" cy="${cy}" r="16" fill="transparent"/>`;
+      s += `<circle class="dot" data-i="${i}" cx="${cx}" cy="${cy}" r="6" fill="${dotCol}" stroke="#0a0e17" stroke-width="2"/>`;
+      s += `<text x="${cx}" y="${H - 10}" text-anchor="middle" class="axis-lbl">${p.date.slice(5)}</text>`;
+    });
+  } else {
+    s += `<text x="${W / 2}" y="${H / 2}" text-anchor="middle" class="axis-lbl">No activity yet</text>`;
+  }
   svg.innerHTML = s;
+
+  const showTip = (i, evt) => {
+    const p = stats[i]; if (!p) return;
+    let h = `<div class="tt-date">${p.date}</div>`;
+    if (p.taken.length) {
+      h += `<div class="tt-sec"><span class="lbl">Taken (${p.taken.length})</span>` +
+        p.taken.map(t => `<div class="tt-line"><span><b>${esc(t.ticker)}</b> <span class="side ${t.side}" style="font-size:10px">${t.side.toUpperCase()}</span></span><span>@ ${t.fill.toFixed(2)}</span></div>`).join("") + `</div>`;
+    }
+    if (p.shut.length) {
+      h += `<div class="tt-sec"><span class="lbl">Closed (${p.shut.length})</span>` +
+        p.shut.map(t => { const d$ = dollars(t.pnl_pct || 0);
+          return `<div class="tt-line"><span><b>${esc(t.ticker)}</b> <span class="side ${t.side}" style="font-size:10px">${t.side.toUpperCase()}</span></span><span class="${cls(d$)}"><b>${fmt$(d$)}</b></span></div>`; }).join("") + `</div>`;
+    }
+    h += `<div class="tt-tot"><span>Day</span><span class="${cls(p.day$)}">${fmt$(p.day$)}</span></div>`;
+    h += `<div class="tt-tot" style="border:none;margin-top:2px;padding-top:0"><span>Cumulative</span><span class="${cls(p.cum$)}">${fmt$(p.cum$)}</span></div>`;
+    h += `<div class="tt-hint">Click to jump to this day ↓</div>`;
+    tip.innerHTML = h;
+    tip.style.display = "block";
+    const r = wrap.getBoundingClientRect();
+    let lx = evt.clientX - r.left + 16, ly = evt.clientY - r.top - 10;
+    tip.style.left = "0px"; tip.style.top = "0px";
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    if (lx + tw > r.width - 8) lx = evt.clientX - r.left - tw - 16;
+    if (ly + th > r.height - 8) ly = r.height - th - 8;
+    if (ly < 0) ly = 8;
+    tip.style.left = lx + "px"; tip.style.top = ly + "px";
+  };
+  const hideTip = () => { tip.style.display = "none"; };
+  svg.querySelectorAll(".halo,.dot").forEach(el => {
+    const i = +el.dataset.i;
+    el.addEventListener("mouseenter", e => showTip(i, e));
+    el.addEventListener("mousemove", e => showTip(i, e));
+    el.addEventListener("mouseleave", hideTip);
+    el.addEventListener("click", () => {
+      hideTip();
+      switchTab("byday");
+      const anchor = $("day-" + stats[i].date);
+      if (anchor) setTimeout(() => anchor.scrollIntoView({behavior: "smooth", block: "start"}), 60);
+    });
+  });
 }
 
 function renderOpen(open) {
   const el = $("open-table");
   if (!open.length) { el.innerHTML = `<tr><td style="padding:20px;color:var(--muted)">No open positions.</td></tr>`; return; }
-  let h = `<thead><tr><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Mark</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized $</th><th>Thesis</th></tr></thead><tbody>`;
+  let h = `<thead><tr><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Mark</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized</th><th>Thesis</th></tr></thead><tbody>`;
   for (const t of open) {
     const u = unreal(t);
-    h += `<tr><td class="ticker">${t.ticker}</td><td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
+    h += `<tr><td class="ticker">${esc(t.ticker)}</td><td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
       <td class="num">${t.fill.toFixed(2)}</td><td class="num">${t.mark != null ? t.mark.toFixed(2) : "—"}</td>
       <td class="num">${t.stop.toFixed(2)}</td><td class="num">${t.target.toFixed(2)}</td>
       <td class="num ${u == null ? "" : cls(dollars(u))}">${u == null ? "—" : fmt$(dollars(u)) + `<br><span style="font-size:11px;color:var(--muted)">${fmtPct(u)}</span>`}</td>
-      <td style="max-width:280px;font-size:12.5px;color:#c6d2e3">${t.thesis || ""}</td></tr>`;
+      <td class="note">${esc(t.thesis)}</td></tr>`;
+  }
+  el.innerHTML = h + "</tbody>";
+}
+
+function renderClosed(closed) {
+  const el = $("closed-table");
+  if (!closed.length) { el.innerHTML = `<tr><td style="padding:20px;color:var(--muted)">No closed trades yet.</td></tr>`; return; }
+  let h = `<thead><tr><th>Exited</th><th>Ticker</th><th>Side</th><th class="num">Entry</th><th class="num">Exit</th><th class="num">P&amp;L</th><th>Why it exited</th><th>Thesis</th></tr></thead><tbody>`;
+  for (const t of closed.slice().reverse()) {
+    const d$ = dollars(t.pnl_pct || 0);
+    h += `<tr><td style="white-space:nowrap">${t.exit_date || t.day}</td><td class="ticker">${esc(t.ticker)}</td>
+      <td><span class="side ${t.side}">${t.side.toUpperCase()}</span></td>
+      <td class="num">${t.fill.toFixed(2)}</td><td class="num">${t.exit != null ? t.exit.toFixed(2) : "—"}</td>
+      <td class="num ${cls(d$)}"><b>${fmt$(d$)}</b><br><span style="font-size:11px;color:var(--muted)">${fmtPct(t.pnl_pct || 0)}</span></td>
+      <td class="note">${esc(t.exit_reason)}</td>
+      <td class="note"><span class="lbl">Why we took it</span>${esc(t.thesis)}</td></tr>`;
   }
   el.innerHTML = h + "</tbody>";
 }
@@ -289,13 +392,13 @@ function renderDays(days, files) {
     const dayClosed = trades.filter(t => t.status === "closed");
     const dayReal$ = dollars(dayClosed.reduce((s, t) => s + (t.pnl_pct || 0), 0));
     const nOpen = trades.filter(t => t.status === "open").length;
-    h += `<div class="card day"><div class="day-head"><span class="d">${d} <span style="color:var(--muted);font-weight:400;font-size:13px">· ${trades.length} setups${nOpen ? ` · ${nOpen} open` : ""}</span></span>
+    h += `<div class="card day" id="day-${d}"><div class="day-head"><span class="d">${d} <span style="color:var(--muted);font-weight:400;font-size:13px">· ${trades.length} setups${nOpen ? ` · ${nOpen} open` : ""}</span></span>
       <span class="dpnl ${cls(dayReal$)}">${dayClosed.length ? fmt$(dayReal$) + " realized" : "—"}</span></div><div class="trades">`;
     for (const t of trades) {
       const pct = t.status === "closed" ? t.pnl_pct : unreal(t);
       const d$ = pct == null ? null : dollars(pct);
       h += `<div class="trade"><div class="trade-top">
-          <span><span class="ticker">${t.ticker}</span> <span class="side ${t.side}">${t.side.toUpperCase()}</span></span>
+          <span><span class="ticker">${esc(t.ticker)}</span> <span class="side ${t.side}">${t.side.toUpperCase()}</span></span>
           <span class="pnl ${d$ == null ? "" : cls(d$)}">${d$ == null ? (t.status === "open" ? "open" : "—") : fmt$(d$) + `<small>${fmtPct(pct)}</small>`}</span></div>
         <div class="kv">
           <div><div class="k">Entry</div><div class="v">${t.fill.toFixed(2)}</div></div>
@@ -305,8 +408,8 @@ function renderDays(days, files) {
           <div><div class="k">Filled</div><div class="v">${t.fill_date || ""}</div></div>
           <div><div class="k">Status</div><div class="v">${t.status}</div></div>
         </div>
-        ${t.thesis ? `<div class="why"><b>Why we took it</b>${t.thesis}</div>` : ""}
-        ${t.exit_reason ? `<div class="why exit"><b>Why we exited</b>${t.exit_reason}</div>` : ""}
+        ${t.thesis ? `<div class="why"><b>Why we took it</b>${esc(t.thesis)}</div>` : ""}
+        ${t.exit_reason ? `<div class="why exit"><b>Why we exited</b>${esc(t.exit_reason)}</div>` : ""}
       </div>`;
     }
     h += `</div></div>`;
